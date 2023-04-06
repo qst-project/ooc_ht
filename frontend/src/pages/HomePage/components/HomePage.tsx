@@ -3,9 +3,11 @@ import { TestModule } from '@modules/TestModule';
 
 function HomePage() {
     return (
-        <div>
-            <TestModule />
-        </div>
+        <section>
+            <div className="container">
+                <TestModule />
+            </div>
+        </section>
     );
 }
 
