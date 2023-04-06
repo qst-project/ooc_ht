@@ -21,7 +21,8 @@
       "@pages/*": ["pages/*"],
       "@modules/*": ["modules/*"],
       "@components/*": ["components/*"],
-      "@ui/*": ["ui/*"]
+      "@ui/*": ["ui/*"],
+      "@store/*": ["store/*"]
     }
   },
   "include": ["src"],
