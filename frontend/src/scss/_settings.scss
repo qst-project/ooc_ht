@@ -1,19 +1,26 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 
-  &__content {
-    flex-grow: 1;
-  }
+    &__content {
+        flex-grow: 1;
+    }
 }
 
 .container {
-  margin: 0 auto;
-  padding: 0 15px;
-  max-width: 1260px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.cube {
+    width: 100px;
+    height: 2000px;
+    background-color: red;
 }

@@ -1,0 +1,59 @@
+{
+    "extends": [
+        "react-app"
+    ],
+    "parserOptions": {
+        // "project": "./tsconfig.json"
+    },
+    "rules": {
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "jsx-quotes": [
+            "error",
+            "prefer-single"
+        ],
+        "semi": "error",
+        "prefer-destructuring": "error",
+        "max-len": [
+            "warn",
+            {
+                "code": 150,
+                "ignoreUrls": true,
+                "ignorePattern": "import"
+            }
+        ],
+        "no-unused-vars": "error",
+        "operator-linebreak": "warn",
+        "react-hooks/rules-of-hooks": "warn",
+        "react-hooks/exhaustive-deps": "warn",
+        "prefer-const": [
+            "error",
+            {
+                "destructuring": "any",
+                "ignoreReadBeforeAssign": false
+            }
+        ],
+        "comma-dangle": [
+            2,
+            "always-multiline"
+        ],
+        "import/order": [
+            "error",
+            {
+                "groups": [
+                    "builtin",
+                    "external",
+                    "internal",
+                    "parent",
+                    "sibling",
+                    "index",
+                    "object",
+                    "type"
+                ],
+                "newlines-between": "always-and-inside-groups"
+            }
+        ]
+    }
+}

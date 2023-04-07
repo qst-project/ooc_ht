@@ -1,22 +1,23 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import eslint from 'vite-plugin-eslint'
+import * as path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  plugins: [
+    react(),
+    eslint(),
+  ],
   server: {
+    watch: {
+      usePolling: true,
+    },
     host: true,
+    strictPort: true,
     port: 8080,
   },
-  resolve:{
-    alias:{
-      '@' : path.resolve(__dirname, './src'),
-      '@pages' : path.resolve(__dirname, './src/pages'),
-      '@modules' : path.resolve(__dirname, './src/modules'),
-      '@components' : path.resolve(__dirname, './src/components'),
-      '@ui' : path.resolve(__dirname, './src/ui'),
-      '@store' : path.resolve(__dirname, './src/store'),
-    },
+  resolve: {
+    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
-  plugins: [react()],
 })
