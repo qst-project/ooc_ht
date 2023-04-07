@@ -1,9 +1,8 @@
-FROM node:alpine
+FROM node:18-alpine
 
 WORKDIR /app
-EXPOSE 8080
-COPY package.json .
-RUN yarn
-COPY . .
-
-CMD [ "yarn", "dev" ]
+COPY package.json /app/package.json
+RUN yarn install --prod
+COPY . /app
+# RUN yarn build
+ENTRYPOINT ["yarn", "dev", "--port", "8080"]

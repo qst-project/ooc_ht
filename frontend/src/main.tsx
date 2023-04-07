@@ -1,15 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { HomePage } from '@pages/HomePage';
-import './scss/index.scss';
-import { ConfigProvider } from 'antd';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+import App from './App';
+
+import '@/scss/main.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <ConfigProvider
-      theme={{
-          token: {},
-      }}
-  >
-      <HomePage />
-  </ConfigProvider>,
-)
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
