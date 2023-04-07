@@ -7,7 +7,18 @@ import * as path from 'path'
 export default defineConfig({
   plugins: [
     react(),
-    eslint(),
+    {
+      ...eslint(),
+      apply: 'build',
+    },
+    {
+      ...eslint({
+        failOnWarning: false,
+        failOnError: false,
+      }),
+      apply: 'serve',
+      enforce: 'post'
+    }
   ],
   server: {
     watch: {
