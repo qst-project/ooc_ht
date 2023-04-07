@@ -1,9 +1,10 @@
 import React from 'react';
+import { Button } from 'antd';
 
 function TestModule() {
     return (
         <div>
-            1
+            <Button>Test</Button>
         </div>
     );
 }
