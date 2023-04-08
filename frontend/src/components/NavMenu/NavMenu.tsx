@@ -1,4 +1,4 @@
-import { Layout, Menu } from 'antd';
+import { Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import {
   HomeOutlined,
@@ -7,26 +7,28 @@ import {
 
 import { MAIN_PAGE_ROUTE, SECOND_PAGE_ROUTE } from '@/consts';
 
-interface SidebarProps {
-  collapsed: boolean;
-}
-
 const menuItems = [
   {
     key: '1',
-    label: <Link to={MAIN_PAGE_ROUTE}>Главная</Link>,
+    label: <Link to={MAIN_PAGE_ROUTE}>Реестр</Link>,
     pathname: MAIN_PAGE_ROUTE,
     icon: <HomeOutlined />,
   },
   {
     key: '2',
-    label: <Link to={SECOND_PAGE_ROUTE}>Вторая</Link>,
+    label: <Link to={SECOND_PAGE_ROUTE}>Мои задачи</Link>,
+    pathname: SECOND_PAGE_ROUTE,
+    icon: <ReadOutlined />,
+  },
+  {
+    key: '3',
+    label: <Link to={SECOND_PAGE_ROUTE}>Текущая повестка</Link>,
     pathname: SECOND_PAGE_ROUTE,
     icon: <ReadOutlined />,
   },
 ];
 
-function Sidebar({ collapsed }: SidebarProps) {
+function NavMenu() {
   const location = useLocation();
   let selectedKeys = '1';
   switch (location.pathname) {
@@ -41,20 +43,17 @@ function Sidebar({ collapsed }: SidebarProps) {
   }
 
   return (
-    <Layout.Sider
-      trigger={null}
-      collapsible
-      collapsed={collapsed}
-      style={{ height: '100%' }}
-    >
-      <Menu
-        theme='dark'
-        mode='inline'
-        defaultSelectedKeys={[selectedKeys]}
-        items={menuItems}
-      />
-    </Layout.Sider>
+    <Menu
+      mode='horizontal'
+      style={{
+        height: '100%',
+        background: 'none',
+        border: 'none',
+      }}
+      defaultSelectedKeys={[selectedKeys]}
+      items={menuItems}
+    />
   );
 }
 
-export default Sidebar;
+export default NavMenu;

@@ -1,32 +1,33 @@
-import React, { ReactNode, useState } from 'react';
-import { Layout, theme } from 'antd';
+import { ReactNode } from 'react';
+import { Layout } from 'antd';
 
-import Sidebar from '@/components/Sidebar';
-import AppHeader from '@/components/Header';
+import AppHeader from '@/components/Header/Header';
 
 const { Header, Content } = Layout;
 
 type PropsWithChildren<P> = P & { children: ReactNode };
 
 function PageLayout({ children }: PropsWithChildren<any>) {
-    const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: { colorFillContent },
-    } = theme.useToken();
-
     return (
-        <Layout style={{ height: '100%' }}>
-            <Sidebar
-                collapsed={collapsed}
-            />
-            <Layout style={{ height: '100%' }}>
-                <Header style={{ padding: '0 10px', background: colorFillContent }}>
-                    <AppHeader setCollapsed={setCollapsed} collapsed={collapsed} />
-                </Header>
-                <Content className='site-layout'>
-                    {children}
-                </Content>
-            </Layout>
+        <Layout style={{
+            height: '100%',
+        }}>
+            <Header style={{
+                background: '#FFFFFF',
+                padding: 0,
+                height: '100px',
+                borderBottom: '1px solid #D9D9D9',
+            }}>
+                <AppHeader />
+            </Header>
+            <Content className='site-layout' style={{
+                padding: '1rem',
+                height: '100%',
+                overflow: 'auto',
+                background: '#FFFFFF',
+            }}>
+                {children}
+            </Content>
         </Layout>
     );
 }

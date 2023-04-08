@@ -1,11 +1,13 @@
 import styles from './MainPage.module.scss';
 
-function MainPage() {
+import RegistryListModule from '@/modules/RegistryList';
+
+function RegistryListPage() {
   return (
     <div className={styles.mainpage}>
-      MAIN PAGE
+        <RegistryListModule />
     </div>
   );
 }
 
-export default MainPage;
+export default RegistryListPage;
