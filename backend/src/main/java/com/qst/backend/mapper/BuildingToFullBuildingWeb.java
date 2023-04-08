@@ -1,11 +1,11 @@
-package com.qst.backend.mappers;
+package com.qst.backend.mapper;
 
-import com.qst.backend.models.pg.Building;
-import com.qst.backend.models.web.CreateCustomAttributeWeb;
-import com.qst.backend.models.web.FullBuildingWeb;
+import com.qst.backend.model.pg.Building;
+import com.qst.backend.model.web.CreateCustomAttributeWeb;
+import com.qst.backend.model.web.FullBuildingWeb;
+import com.qst.backend.service.SingletonCollector;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -17,12 +17,12 @@ public class BuildingToFullBuildingWeb implements Function<Building, FullBuildin
 
     @Override
     public FullBuildingWeb apply(Building building) {
-        Map<String, Map<String, List<CreateCustomAttributeWeb>>> attributes = building.attributes.stream()
+        Map<String, Map<String, CreateCustomAttributeWeb>> attributes = building.attributes.stream()
                 .collect(
                         Collectors.groupingBy(e -> e.groupName,
                                 Collectors.groupingBy(e -> e.name,
                                         Collectors.mapping(e -> new CreateCustomAttributeWeb(e.value, e.meta),
-                                                Collectors.toList()))));
+                                                SingletonCollector.toSingleton()))));
         return new FullBuildingWeb(
                 building.id,
                 building.name,

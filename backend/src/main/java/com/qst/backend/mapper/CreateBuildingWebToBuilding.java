@@ -1,7 +1,7 @@
-package com.qst.backend.mappers;
+package com.qst.backend.mapper;
 
-import com.qst.backend.models.pg.Building;
-import com.qst.backend.models.web.CreateBuildingWeb;
+import com.qst.backend.model.pg.Building;
+import com.qst.backend.model.web.CreateBuildingWeb;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Function;

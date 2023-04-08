@@ -1,4 +1,4 @@
-package com.qst.backend.models.pg;
+package com.qst.backend.model.pg;
 
 import jakarta.persistence.*;
 
