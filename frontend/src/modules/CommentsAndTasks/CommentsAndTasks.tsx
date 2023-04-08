@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+
 import styles from './CommentsAndTasks.module.scss';
+
 import Comment from '@/components/Comment';
 
 interface ICommentsData {
@@ -41,11 +43,11 @@ const mockCommentsData: ICommentsData[] = [
         text: 'Снести здание',
         id: 4,
         replies: [],
-    }
+    },
 ];
 
 function CommentsAndTasks() {
-    const [commentsData, setCommentsData] = useState(mockCommentsData);
+    const [commentsData] = useState(mockCommentsData);
     const [commentsStack, setCommentsStack] = useState<[ICommentsData, number][]>([]);
     const _commentsStack: [ICommentsData, number][] = [];
 
@@ -53,7 +55,7 @@ function CommentsAndTasks() {
         commentsData.forEach(commentData => {
             _commentsStack.push([commentData, deepLevel]);
             parseCommentsData(commentData.replies, deepLevel + 1);
-        })
+        });
     }
 
     useEffect(() => {
