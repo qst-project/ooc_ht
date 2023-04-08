@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-class BuildingRestControllerTest {
+class BuildingRestControllerIT {
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -37,7 +37,7 @@ class BuildingRestControllerTest {
         return JsonPath.using(conf).parse(json).read(jsonpath).toString().replace("\"", "");
     }
 
-//    @Test
+    @Test
     void createAndGetBuilding() throws Exception {
         String sampleRequest = """
                 {

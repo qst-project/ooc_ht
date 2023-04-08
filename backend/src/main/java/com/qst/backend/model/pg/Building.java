@@ -19,6 +19,7 @@ public class Building {
     public String area;
     public String owner;
     public String fact_owner;
+    @Lob
     public String about;
     @OneToMany(mappedBy = "building")
     public Set<BuildingCustomAttribute> attributes;
