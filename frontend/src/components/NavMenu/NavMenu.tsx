@@ -1,9 +1,11 @@
 import { Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  HomeOutlined,
-  ReadOutlined,
-} from '@ant-design/icons';
+// import {
+//   HomeOutlined,
+//   ReadOutlined,
+// } from '@ant-design/icons';
+
+import styles from './NavMenu.module.scss';
 
 import { MAIN_PAGE_ROUTE, SECOND_PAGE_ROUTE } from '@/consts';
 
@@ -12,19 +14,16 @@ const menuItems = [
     key: '1',
     label: <Link to={MAIN_PAGE_ROUTE}>Реестр</Link>,
     pathname: MAIN_PAGE_ROUTE,
-    icon: <HomeOutlined />,
   },
   {
     key: '2',
     label: <Link to={SECOND_PAGE_ROUTE}>Мои задачи</Link>,
     pathname: SECOND_PAGE_ROUTE,
-    icon: <ReadOutlined />,
   },
   {
     key: '3',
     label: <Link to={SECOND_PAGE_ROUTE}>Текущая повестка</Link>,
     pathname: SECOND_PAGE_ROUTE,
-    icon: <ReadOutlined />,
   },
 ];
 
@@ -44,6 +43,7 @@ function NavMenu() {
 
   return (
     <Menu
+    className={styles.nav_menu}
       mode='horizontal'
       style={{
         height: '100%',
