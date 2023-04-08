@@ -5,13 +5,19 @@ import styles from './Property.module.scss';
 import { PropertyProps } from './Property.types';
 
 import { PropertyType } from '@/consts';
+import { useAppSelector } from '@/store';
 
 function Property({ name, label, type, options }: PropertyProps) {
+    const isEdit = useAppSelector(state => state.buildingReducer.isEdit);
+
     const getPropertyElement = () => {
+        if (!isEdit) {
+            return 12345;
+        }
         switch (type) {
             case PropertyType.TEXT:
                 return (
-                    <Input/>
+                    <Input />
                 );
             case PropertyType.SELECT:
                 return (

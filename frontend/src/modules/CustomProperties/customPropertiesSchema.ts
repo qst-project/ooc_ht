@@ -6,6 +6,7 @@ export interface ICustomPropertySchema {
     type: PropertyType,
     options?: string[],
     group?: string,
+    value?: string,
 }
 
 const customPropertiesSchema: ICustomPropertySchema[] = [

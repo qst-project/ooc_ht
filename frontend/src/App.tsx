@@ -4,13 +4,15 @@ import { ConfigProvider } from 'antd';
 import MainPage from '@/pages/MainPage';
 import SecondPage from '@/pages/SecondPage';
 import {
-  BUILDING_PAGE_ROUTE,
+  BUILDINGS_PAGE_ROUTE,
   Colors,
   MAIN_PAGE_ROUTE,
   SECOND_PAGE_ROUTE,
+  NEW_BUILDING_PAGE_ROUTE,
 } from '@/consts';
 import PageLayout from '@/modules/PageLayout';
 import BuildingPage from '@/pages/BuildingPage';
+import NewBuildingPage from '@/pages/NewBuildingPage/NewBuildingPage';
 
 function App() {
   return (
@@ -38,11 +40,17 @@ function App() {
                 }
               />
               <Route
-                path={BUILDING_PAGE_ROUTE}
+                path={`${BUILDINGS_PAGE_ROUTE}/:id`}
                 element={
                   <BuildingPage />
                 }
               />
+                <Route
+                  path={NEW_BUILDING_PAGE_ROUTE}
+                  element={
+                    <NewBuildingPage />
+                  }
+                />
             </Routes>
           </PageLayout>
         </BrowserRouter>
