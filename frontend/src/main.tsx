@@ -6,5 +6,5 @@ import App from './App';
 import '@/scss/main.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <App />
+    <App />,
 );

@@ -14,7 +14,7 @@ import BuildingPage from '@/pages/BuildingPage';
 
 function App() {
   return (
-    // <div className='App'>
+    <div className='App'>
       <ConfigProvider
         theme={{
           token: {
@@ -47,7 +47,7 @@ function App() {
           </PageLayout>
         </BrowserRouter>
       </ConfigProvider>
-    // </div>
+     </div>
   );
 }
 

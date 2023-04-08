@@ -35,19 +35,18 @@ function AddNewObject() {
             <Form.Item
                 name='county'
                 label='Округ'
-                rules={[
-                    {
-                        required: true,
-                        message: 'Введите округ',
-                    },
-                    {
-                        min: 3,
-                        message: 'Округ слишком короткий',
-                    },
-                ]}
             >
                 <Input
                     placeholder='Округ'
+                    size='middle'
+                />
+            </Form.Item>
+            <Form.Item
+                name='district'
+                label='Район'
+            >
+                <Input
+                    placeholder='Район'
                     size='middle'
                 />
             </Form.Item>

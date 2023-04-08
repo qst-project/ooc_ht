@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+
 import styles from './CommentsAndTasks.module.scss';
+
 import Comment from '@/components/Comment';
 
 interface ICommentsData {
@@ -41,7 +43,7 @@ const mockCommentsData: ICommentsData[] = [
         text: 'Снести здание',
         id: 4,
         replies: [],
-    }
+    },
 ];
 
 function CommentsAndTasks() {

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import styles from './BuildingInfo.module.scss';
+
 import ImageList from '@/components/ImageList';
 import TaskList from '@/components/TaskList';
 

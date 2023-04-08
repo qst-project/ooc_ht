@@ -1,8 +1,9 @@
-import { Col, Row, Typography } from 'antd';
+import { Col, Row } from 'antd';
 
 import logo from './../../assets/logo.png';
 
 import NavMenu from '@/components/NavMenu';
+import Notifications from '@/components/Notifications';
 
 function AppHeader() {
   return (
@@ -26,7 +27,7 @@ function AppHeader() {
         />
       </Col>
       <Col
-        span={19}
+        span={17}
         style={{
           height: '73%',
         }}
@@ -34,14 +35,12 @@ function AppHeader() {
         <NavMenu />
       </Col>
       <Col
-        span={2}
+        span={4}
         style={{
           height: '73%',
         }}
       >
-        <Typography.Text>
-          Уведомления
-        </Typography.Text>
+        <Notifications />
       </Col>
     </Row>
   );
