@@ -1,0 +1,21 @@
+.main {
+    width: 100%;
+}
+
+.properties {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: 24px;
+}
+
+.add-section {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.group {
+    width: 600px;
+}
