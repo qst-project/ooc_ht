@@ -19,6 +19,5 @@ public class CreateBuildingWeb {
     public String fact_owner;
     public String about;
 
-    Map<String, String> media;
     Map<String, Map<String, CreateCustomAttributeWeb>> customAttributes;
 }

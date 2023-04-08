@@ -65,6 +65,28 @@ public class BuildingRestController {
         return buildingToFullBuildingWeb.apply(building);
     }
 
+    @PatchMapping("/building/{buildingId}")
+    public FullBuildingWeb patchBuilding(@PathVariable @NotNull Long buildingId, @RequestBody CreateBuildingWeb patchRequest) {
+        Building building = buildingRepository.findById(buildingId).orElseThrow();
+        building.name = patchRequest.name != null ? patchRequest.name : building.name;
+        building.county = patchRequest.county != null ? patchRequest.county : building.county;
+        building.district = patchRequest.district != null ? patchRequest.district : building.district;
+        building.address = patchRequest.address != null ? patchRequest.address : building.address;
+        building.type = patchRequest.type != null ? patchRequest.type : building.type;
+        building.condition = patchRequest.condition != null ? patchRequest.condition : building.condition;
+        building.area = patchRequest.area != null ? patchRequest.area : building.area;
+        building.owner = patchRequest.owner != null ? patchRequest.owner : building.owner;
+        building.fact_owner = patchRequest.fact_owner != null ? patchRequest.fact_owner : building.fact_owner;
+        building.about = patchRequest.about != null ? patchRequest.about : building.about;
+        if (patchRequest.getCustomAttributes() != null) {
+            buildingCustomAttributeRepository.deleteAll(building.attributes);
+            buildingSaver.saveWithProperties(building, patchRequest.getCustomAttributes());
+        } else {
+            buildingRepository.save(building);
+        }
+        return buildingToFullBuildingWeb.apply(building);
+    }
+
     @GetMapping("/buildings/{buildingIds}/export")
     public void exportBuildings(@PathVariable @NotNull String buildingIds, HttpServletResponse response) throws IOException {
         List<Long> ids = Arrays.stream(buildingIds.split(",")).map(Long::parseLong).collect(Collectors.toList());
