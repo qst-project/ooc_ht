@@ -1,9 +1,7 @@
-package com.qst.backend.models.web;
+package com.qst.backend.model.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.Map;
 
 @Data
 @AllArgsConstructor

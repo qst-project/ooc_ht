@@ -1,15 +1,13 @@
-package com.qst.backend.models.web;
+package com.qst.backend.model.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
-public class FullBuildingWeb {
-    public Long id;
+public class CreateBuildingWeb {
     public String name;
     public String county;
     public String district;
@@ -21,5 +19,5 @@ public class FullBuildingWeb {
     public String fact_owner;
     public String about;
 
-    Map<String, Map<String, List<CreateCustomAttributeWeb>>> customAttributes;
+    Map<String, Map<String, CreateCustomAttributeWeb>> customAttributes;
 }
