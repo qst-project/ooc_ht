@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button, Input, InputRef, Modal, Space, Table } from 'antd';
 import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
@@ -30,7 +30,6 @@ type DataIndex = keyof DataType;
 function RegistryListModule() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    console.log(searchParams.get('status'));
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const [data, setData] = useState<DataType[]>();

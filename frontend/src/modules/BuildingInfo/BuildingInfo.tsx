@@ -1,10 +1,6 @@
 import React from 'react';
-
-<<<<<<< HEAD
-=======
 import { Form } from 'antd';
 
->>>>>>> 8a15a67be0d1fef035c46be2d9641326f545ceee
 import styles from './BuildingInfo.module.scss';
 
 import ImageList from '@/components/ImageList';
