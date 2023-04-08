@@ -1,5 +1,27 @@
 version: '2'
 services:
+  rest-backend:
+    container_name: monolith
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    network_mode: host
+    depends_on:
+      - backend-postgres
+
+  backend-postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: ooc
+      PGDATA: /data/postgres
+    volumes:
+      - ./backend/postgres-data:/data/postgres
+    ports:
+      - "5432:5432"
+
   front:
     build:
       context: frontend

@@ -1,0 +1,22 @@
+$listWidth: 600px;
+
+.main {
+  width: $listWidth;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.img {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+.list-item:first-child {
+  color: orange;
+
+  .img {
+    width: $listWidth !important;
+    height: 400px !important;
+  }
+}
