@@ -1,7 +1,8 @@
-import React from 'react';
+import { Steps } from 'antd';
+
 import styles from './TaskList.module.scss';
 import { TaskListProps } from './TaskList.types';
-import { Steps } from 'antd';
+
 
 function TaskList({ tasks }: TaskListProps) {
   return (

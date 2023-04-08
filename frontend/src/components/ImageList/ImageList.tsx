@@ -1,7 +1,7 @@
-import React from 'react';
+import { Image } from 'antd';
+
 import styles from './ImageList.module.scss';
 import { ImageListProps } from './ImageList.types';
-import { Image } from 'antd';
 
 function ImageList({ srcList }: ImageListProps) {
   return (

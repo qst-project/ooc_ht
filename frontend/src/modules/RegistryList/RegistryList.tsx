@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Button, Modal, Space, Table } from 'antd';
 import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
+
+import AddNewObject from '@/components/AddNewObject';
 
 interface DataType {
     key: string;
@@ -20,6 +22,7 @@ interface TableParams {
 function RegistryListModule() {
     const [data, setData] = useState<DataType[]>();
     const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
             current: 1,
@@ -29,27 +32,58 @@ function RegistryListModule() {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Name',
+            title: 'Имя',
             dataIndex: 'name',
             key: 'name',
-            width: '30%',
+            width: '15%',
             sorter: true,
             render: (name) => `${name.first} ${name.last}`,
             // ...getColumnSearchProps('name'),
         },
         {
-            title: 'Phone',
+            title: 'Округ',
             dataIndex: 'phone',
             key: 'phone',
-            width: '20%',
+            width: '15%',
             render: (phone) => `${phone}`,
             // ...getColumnSearchProps('age'),
         },
         {
-            title: 'Address',
+            title: 'Район',
             dataIndex: 'location',
             key: 'location',
             render: (location) => `${location.state}`,
+            width: '15%',
+            // ...getColumnSearchProps('address'),
+            // sorter: (a, b) => a.address.length - b.address.length,
+            // sortDirections: ['descend', 'ascend'],
+        },
+        {
+            title: 'Адресс',
+            dataIndex: 'location',
+            key: 'location',
+            render: (location) => `${location.state}`,
+            width: '15%',
+            // ...getColumnSearchProps('address'),
+            // sorter: (a, b) => a.address.length - b.address.length,
+            // sortDirections: ['descend', 'ascend'],
+        },
+        {
+            title: 'Тип',
+            dataIndex: 'location',
+            key: 'location',
+            render: (location) => `${location.state}`,
+            width: '15%',
+            // ...getColumnSearchProps('address'),
+            // sorter: (a, b) => a.address.length - b.address.length,
+            // sortDirections: ['descend', 'ascend'],
+        },
+        {
+            title: 'Статус',
+            dataIndex: 'location',
+            key: 'location',
+            render: (location) => `${location.state}`,
+            width: '15%',
             // ...getColumnSearchProps('address'),
             // sorter: (a, b) => a.address.length - b.address.length,
             // sortDirections: ['descend', 'ascend'],
@@ -96,16 +130,28 @@ function RegistryListModule() {
         fetchData();
     }, []);
 
-    console.log(data);
-
     return (
-        <Table
-            columns={columns}
-            loading={loading}
-            pagination={tableParams.pagination}
-            dataSource={data}
-            onChange={handleTableChange}
-        />
+        <Space direction={'vertical'} style={{width: '100%'}}>
+            <Table
+                columns={columns}
+                loading={loading}
+                pagination={tableParams.pagination}
+                dataSource={data}
+                onChange={handleTableChange}
+            />
+            <Button type='primary' onClick={() => setOpen(true)}>
+                Добавить новый объект
+            </Button>
+            <Modal
+                title={'Создание нового объекта'}
+                centered
+                open={open}
+                onCancel={() => setOpen(false)}
+                footer={[]}
+            >
+                <AddNewObject />
+            </Modal>
+        </Space>
     );
 }
 
