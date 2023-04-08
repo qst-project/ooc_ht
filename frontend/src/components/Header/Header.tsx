@@ -5,7 +5,12 @@ import logo from './../../assets/logo.png';
 import NavMenu from '@/components/NavMenu';
 import Notifications from '@/components/Notifications';
 
-function AppHeader() {
+interface AppHeaderProps {
+  setCollapsed: Function;
+  collapsed: boolean;
+}
+
+function AppHeader({ setCollapsed, collapsed }: AppHeaderProps) {
   return (
     <Row
       justify='space-around'
@@ -40,7 +45,7 @@ function AppHeader() {
           height: '73%',
         }}
       >
-        <Notifications />
+        <Notifications collapsed={collapsed} setCollapsed={setCollapsed} />
       </Col>
     </Row>
   );
