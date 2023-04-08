@@ -1,4 +1,4 @@
 /* eslint-disable no-unused-vars */
 export enum Colors {
-    PRIMARY = '#FAB82E'
+    PRIMARY = '#000000'
 }
