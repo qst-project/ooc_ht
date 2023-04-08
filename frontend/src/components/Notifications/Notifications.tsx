@@ -3,9 +3,14 @@ import { BellOutlined } from '@ant-design/icons';
 
 import { Colors } from '@/consts';
 
-function Notifications() {
+interface NotificationsProps {
+    setCollapsed: Function;
+    collapsed: boolean;
+}
+
+function Notifications({ setCollapsed, collapsed }: NotificationsProps) {
     return (
-        <Row align={'middle'}>
+        <Row align={'middle'} onClick={() => setCollapsed(!collapsed)}>
             <Space>
                 <BellOutlined style={{
                     color: Colors.PRIMARY,

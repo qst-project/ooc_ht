@@ -1,9 +1,5 @@
 import { Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-// import {
-//   HomeOutlined,
-//   ReadOutlined,
-// } from '@ant-design/icons';
 
 import styles from './NavMenu.module.scss';
 
