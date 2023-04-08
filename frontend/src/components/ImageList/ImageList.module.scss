@@ -1,4 +1,4 @@
-$listWidth: 600px;
+$listWidth: 500px;
 
 .main {
   width: $listWidth;
@@ -10,6 +10,7 @@ $listWidth: 600px;
 .img {
   width: 80px !important;
   height: 80px !important;
+  object-fit: cover;
 }
 
 .list-item:first-child {
@@ -17,6 +18,6 @@ $listWidth: 600px;
 
   .img {
     width: $listWidth !important;
-    height: 400px !important;
+    height: 500px !important;
   }
 }

@@ -1,12 +1,10 @@
-package com.qst.backend.models.pg;
+package com.qst.backend.model.pg;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
-
 @Entity
 @Table(name = "building_comment")
-public class BuildingComment { // todo
+public class Notification { // todo
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;

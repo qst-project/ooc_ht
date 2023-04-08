@@ -1,4 +1,4 @@
-package com.qst.backend.models.pg;
+package com.qst.backend.model.pg;
 
 import jakarta.persistence.*;
 
@@ -14,8 +14,8 @@ public class BuildingCustomAttribute {
     public String meta;
 
     @ManyToOne
-    @JoinColumn(name="building_id", nullable=false)
-    private Building building;
+    @JoinColumn(name = "building_id", nullable = false)
+    public Building building;
 
     public static BuildingCustomAttribute create(Building building, String groupName, String name, String value, String meta) {
         BuildingCustomAttribute buildingCustomAttribute = new BuildingCustomAttribute();
