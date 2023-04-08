@@ -10,6 +10,8 @@ import styles from './CreatePropertyModal.module.scss';
 import { PropertyType } from '@/consts';
 
 import { ICustomPropertySchema } from '@/modules/CustomProperties/customPropertiesSchema';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { buildingSlice } from '@/store/slices/BuildingSlice';
 
 
 const typeOptions = [
@@ -24,8 +26,11 @@ const typeOptions = [
 ];
 
 function CreatePropertyModal({ isOpen, onOk, onCancel }: CreatePropertyModalProps) {
+    const groups = useAppSelector(state => state.buildingReducer.groups);
+    const { setGroups } = buildingSlice.actions;
+    const dispatch = useAppDispatch();
+
     const [selectedType, setSelectedType] = useState<PropertyType>();
-    const [groups, setGroups] = useState<string[]>([]);
     const [groupName, setGroupName] = useState('');
     const [form] = Form.useForm();
 
@@ -49,7 +54,7 @@ function CreatePropertyModal({ isOpen, onOk, onCancel }: CreatePropertyModalProp
 
     const addItem = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
         e.preventDefault();
-        setGroups(prev => [...prev, groupName]);
+        dispatch(setGroups([...groups, groupName]));
         setGroupName('');
     };
 

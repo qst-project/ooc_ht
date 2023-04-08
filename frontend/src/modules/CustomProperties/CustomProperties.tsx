@@ -9,19 +9,23 @@ import styles from './CustomProperties.module.scss';
 import Property from '@/components/Property';
 
 import CreatePropertyModal from '@/components/CreatePropertyModal';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { buildingSlice } from '@/store/slices/BuildingSlice';
 
 function CustomProperties() {
+    const groups = useAppSelector(state => state.buildingReducer.groups);
+    const { setGroups } = buildingSlice.actions;
+    const dispatch = useAppDispatch();
+
     const [schemas, setSchemas] = useState<ICustomPropertySchema[]>([]);
-    const [groups, setGroups] = useState<string[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    console.log(groups);
 
     useEffect(() => {
         const groupsSet = new Set<string>();
         schemas.forEach(schema => {
             if (schema.group) groupsSet.add(schema.group);
         });
-        setGroups([...groupsSet]);
+        dispatch(setGroups([...groupsSet]));
     }, [schemas]);
 
     const openModal = () => {
