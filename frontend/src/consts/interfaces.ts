@@ -3,14 +3,34 @@ import { ICustomPropertySchema } from '@/modules/CustomProperties/customProperti
 export interface IBuildingData {
     id: number,
     customProperties: ICustomPropertySchema[],
+    about?: string,
+    address?: string,
+    area?: string,
+    condition?: string,
+    county?: string,
+    district?: string,
+    fact_owner?: string,
+    name?: string,
+    owner?: string,
+    type?: string,
 }
 
 export interface IBuildingDataBack {
     id: number,
     customAttributes: Record<string, Record<string, {
         value: string,
-        meta: string,
+        meta?: string,
     }>>
+    about?: string,
+    address?: string,
+    area?: string,
+    condition?: string,
+    county?: string,
+    district?: string,
+    fact_owner?: string,
+    name?: string,
+    owner?: string,
+    type?: string,
 }
 
 export interface ICommentsData {

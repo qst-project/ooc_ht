@@ -8,10 +8,13 @@ import BuildingInfo from '@/modules/BuildingInfo';
 import CommentsAndTasks from '@/modules/CommentsAndTasks';
 
 
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchBuilding } from '@/store/actions';
+import EditButton from '@/modules/EditButton';
+import Loading from '@/components/Loading';
 
 function BuildingPage() {
+    const isLoading = useAppSelector(state => state.buildingReducer.isLoading);
     const dispatch = useAppDispatch();
     const { id: buildingId } = useParams<{ id?: string }>();
 
@@ -19,11 +22,16 @@ function BuildingPage() {
         dispatch(fetchBuilding(Number(buildingId)));
     }, [buildingId]);
 
+    if (isLoading) return (
+        <Loading />
+    );
+
     if (!buildingId) return null;
 
     return (
         <div className={styles.main}>
             <div className='container'>
+                <EditButton />
                 <BuildingInfo />
                 <CommentsAndTasks buildingId={Number(buildingId)} />
             </div>
