@@ -150,6 +150,11 @@ class BuildingRestControllerIT {
                 .contentType("application/json")
                 .content(createTask)
         ).andReturn().getResponse().getContentAsString();
+        mockMvc.perform(get("/building/%s/comments".formatted(building.id)))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$[0].text").value(("my comment"))
+                );
         System.out.println(id);
     }
 

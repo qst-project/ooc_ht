@@ -15,7 +15,7 @@ public class TaskChangeHistory {
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date")
-    private Date createdDate;
+    public Date createdDate;
 
     @OneToMany(mappedBy = "changeHistory")
     public Set<TaskFieldChange> changes;
