@@ -34,6 +34,8 @@ public class BuildingToBuildingXML implements Function<Building, BuildingXML> {
                 building.owner,
                 building.fact_owner,
                 building.about,
+                building.status,
+                building.description,
                 customAttributeXMLS
         );
     }

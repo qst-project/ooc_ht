@@ -10,6 +10,7 @@ import java.util.List;
 public class BuildingCommentWeb {
     public Long id;
     public String text;
+    public Long taskId;
     public UserPreviewWeb author;
     public List<BuildingCommentWeb> replies;
 }

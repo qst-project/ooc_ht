@@ -90,6 +90,8 @@ public class BuildingRestController {
         building.owner = patchRequest.owner != null ? patchRequest.owner : building.owner;
         building.fact_owner = patchRequest.fact_owner != null ? patchRequest.fact_owner : building.fact_owner;
         building.about = patchRequest.about != null ? patchRequest.about : building.about;
+        building.status = patchRequest.status != null ? patchRequest.status : building.status;
+        building.description = patchRequest.description != null ? patchRequest.description : building.description;
         buildingRepository.save(building);
         if (patchRequest.getCustomAttributes() != null) {
             buildingCustomAttributeRepository.deleteAll(building.attributes);

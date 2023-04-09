@@ -35,6 +35,8 @@ public class BuildingToFullBuildingWeb implements Function<Building, FullBuildin
                 building.owner,
                 building.fact_owner,
                 building.about,
+                building.status,
+                building.description,
                 attributes
         );
     }
