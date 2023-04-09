@@ -103,7 +103,7 @@ public class BuildingRestController {
         return buildingToFullBuildingWeb.apply(building);
     }
 
-    @GetMapping(value = "/buildings/{buildingIds}/export", produces = MediaType.ALL_VALUE)
+    @GetMapping(value = "/buildings/{buildingIds}/export", produces = "application/zip")
     public void exportBuildings(@PathVariable @NotNull String buildingIds, HttpServletResponse response) throws IOException {
         List<Long> ids = Arrays.stream(buildingIds.split(",")).map(Long::parseLong).collect(Collectors.toList());
         byte[] bytes = buildingsArchiveService.createArchiveFromBuildings(ids);
