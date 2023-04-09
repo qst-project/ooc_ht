@@ -8,4 +8,9 @@ import lombok.Data;
 public class BuildingPreviewWeb {
     Long id;
     String name;
+    String type;
+    String address;
+    String district;
+    String county;
+    String status;
 }

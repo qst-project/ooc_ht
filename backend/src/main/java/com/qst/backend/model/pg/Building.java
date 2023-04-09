@@ -24,6 +24,8 @@ public class Building {
     public String owner;
     public String fact_owner;
     public String about;
+    public String status;
+    public String description;
     @OneToMany(mappedBy = "building")
     public Set<BuildingCustomAttribute> attributes;
 

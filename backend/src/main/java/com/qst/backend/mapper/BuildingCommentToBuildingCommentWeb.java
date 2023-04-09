@@ -26,6 +26,7 @@ public class BuildingCommentToBuildingCommentWeb implements Function<BuildingCom
         List<BuildingCommentWeb> replies = buildingCommentRepository.findAllByParent(buildingComment).stream()
                 .map(new BuildingCommentToBuildingCommentWeb(userToUserPreviewWeb, buildingCommentRepository))
                 .toList();
-        return new BuildingCommentWeb(buildingComment.id, buildingComment.text, userPreviewWeb, replies);
+        Long taskId = buildingComment.task != null ? buildingComment.task.id : null;
+        return new BuildingCommentWeb(buildingComment.id, buildingComment.text, taskId, userPreviewWeb, replies);
     }
 }

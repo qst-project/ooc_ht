@@ -24,6 +24,8 @@ public class CreateBuildingWebToBuilding implements Function<CreateBuildingWeb, 
         building.owner = createBuildingWeb.owner;
         building.fact_owner = createBuildingWeb.fact_owner;
         building.about = createBuildingWeb.about;
+        building.status = createBuildingWeb.status;
+        building.description = createBuildingWeb.description;
         return building;
     }
 }

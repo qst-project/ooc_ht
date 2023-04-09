@@ -57,6 +57,8 @@ class BuildingRestControllerIT {
                     "owner": "value_owner",
                     "fact_owner": "value_fact_owner",
                     "about": "value_about",
+                    "status": "value_status",
+                    "description": "value_description",
                     "customAttributes": {
                         "group": {
                             "name": {
@@ -91,7 +93,9 @@ class BuildingRestControllerIT {
                         jsonPath("$.area").value("value_area"),
                         jsonPath("$.owner").value("value_owner"),
                         jsonPath("$.fact_owner").value("value_fact_owner"),
-                        jsonPath("$.about").value("value_about")
+                        jsonPath("$.about").value("value_about"),
+                        jsonPath("$.status").value("value_status"),
+                        jsonPath("$.description").value("value_description")
                 )
         ;
         byte[] zipArchive = mockMvc.perform(get("/buildings/%s/export".formatted(buildingId))).andReturn().getResponse().getContentAsByteArray();
@@ -142,7 +146,8 @@ class BuildingRestControllerIT {
         mockMvc.perform(get("/building/%s/comments".formatted(building.id)))
                 .andExpectAll(
                         status().isOk(),
-                        jsonPath("$[0].replies[0].text").value(("reply"))
+                        jsonPath("$[0].replies[0].text").value(("reply")),
+                        jsonPath("$[0].replies.length()").value(1)
                 );
     }
 
