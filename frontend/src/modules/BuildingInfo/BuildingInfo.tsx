@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'antd';
+import { Button, Form } from 'antd';
 
 import styles from './BuildingInfo.module.scss';
 
@@ -7,13 +7,26 @@ import ImageList from '@/components/ImageList';
 
 import MainProperties from '@/components/MainProperties';
 import CustomProperties from '@/modules/CustomProperties';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { postBuilding } from '@/store/actions/postBuilding';
 
 function BuildingInfo() {
+    const isEdit = useAppSelector(state => state.buildingReducer.isEdit);
+    const buildingData = useAppSelector(state => state.buildingReducer.buildingData);
+    const dispatch = useAppDispatch();
+    const [form] = Form.useForm();
+
+    const handleForm = (values: any) => {
+        if (buildingData) dispatch(postBuilding(values, buildingData));
+    };
+
     return (
         <section className={styles.main}>
             <Form
                 name='building'
                 className={styles.form}
+                onFinish={handleForm}
+                form={form}
             >
                 <ImageList srcList={[
                     'https://www.tiafotc.org/wp-content/uploads/2020/07/CLTHQ_ArticleImage_1200x630.jpg',
@@ -33,6 +46,17 @@ function BuildingInfo() {
                         вам в выборе и покупке или аренде недвижимости, которая соответствует вашим потребностям и бюджету.
                     </p>
                 </div>
+                {isEdit && (
+                    <Form.Item>
+                        <Button
+                            size='large'
+                            type='primary'
+                            htmlType='submit'
+                        >
+                            Сохранить изменения
+                        </Button>
+                    </Form.Item>
+                )}
             </Form>
         </section>
     );

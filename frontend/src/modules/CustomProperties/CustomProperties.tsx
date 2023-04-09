@@ -15,6 +15,7 @@ import { buildingSlice } from '@/store/slices/BuildingSlice';
 function CustomProperties() {
     const buildingData = useAppSelector(state => state.buildingReducer.buildingData);
     const groups = useAppSelector(state => state.buildingReducer.groups);
+    const isEdit = useAppSelector(state => state.buildingReducer.isEdit);
     const { setGroups } = buildingSlice.actions;
     const dispatch = useAppDispatch();
 
@@ -59,27 +60,31 @@ function CustomProperties() {
                                 type={schema.type}
                                 options={schema.options}
                                 key={schema.label}
+                                value={schema.value}
                             />
                         ))}
                     </Card>
                 ))}
             </div>
-            <div className={styles['add-section']}>
-                <Button
-                    type='primary'
-                    onClick={openModal}
-                    block icon={<PlusOutlined/>}
-                    size='large'
-                    style={{ width: 'auto' }}
-                >
-                    Добавить поле
-                </Button>
-                <CreatePropertyModal
-                    isOpen={isModalOpen}
-                    onOk={addProperty}
-                    onCancel={closeModal}
-                />
-            </div>
+            {isEdit && (
+                <div className={styles['add-section']}>
+                    <Button
+                        type='primary'
+                        onClick={openModal}
+                        block icon={<PlusOutlined/>}
+                        size='large'
+                        htmlType='submit'
+                        style={{ width: 'auto' }}
+                    >
+                        Добавить поле
+                    </Button>
+                    <CreatePropertyModal
+                        isOpen={isModalOpen}
+                        onOk={addProperty}
+                        onCancel={closeModal}
+                    />
+                </div>
+            )}
         </div>
     );
 }

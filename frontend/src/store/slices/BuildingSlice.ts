@@ -31,6 +31,14 @@ export const buildingSlice = createSlice({
         setIsEdit(state, action: PayloadAction<boolean>) {
             state.isEdit = action.payload;
         },
+        updateBuildingData(state, action: PayloadAction<Record<string, string>>) {
+            Object.entries(action.payload).forEach(([propertyName, value]) => {
+                if (state.buildingData) {
+                    const customProperty = state.buildingData.customProperties.find(property => property.name === propertyName);
+                    if (customProperty) customProperty.value = value;
+                }
+            });
+        },
     },
 });
 
