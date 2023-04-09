@@ -8,6 +8,7 @@ interface BuildingState {
     isEdit: boolean,
     groups: string[],
     buildingData?: IBuildingData,
+    buildins: IBuildingData[],
     isNew: boolean,
 }
 
@@ -15,6 +16,7 @@ const initialState: BuildingState = {
     isLoading: false,
     isEdit: false,
     groups: [],
+    buildins: [],
     isNew: false,
 };
 
@@ -52,6 +54,9 @@ export const buildingSlice = createSlice({
         },
         setIsNew(state, action: PayloadAction<boolean>) {
             state.isNew = action.payload;
+        },
+        setBuildings(state, action: PayloadAction<IBuildingData[]>) {
+            state.buildins = action.payload;
         },
     },
 });
