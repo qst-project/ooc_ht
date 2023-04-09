@@ -1,0 +1,1 @@
+export { fetchBuilding } from './fetchBuilding';

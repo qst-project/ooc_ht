@@ -4,8 +4,6 @@ import { Form } from 'antd';
 import styles from './BuildingInfo.module.scss';
 
 import ImageList from '@/components/ImageList';
-import TaskList from '@/components/TaskList';
-
 
 import MainProperties from '@/components/MainProperties';
 import CustomProperties from '@/modules/CustomProperties';
@@ -35,9 +33,6 @@ function BuildingInfo() {
                         вам в выборе и покупке или аренде недвижимости, которая соответствует вашим потребностям и бюджету.
                     </p>
                 </div>
-                <TaskList
-                    tasks={['Задача 1', 'Задача 2', 'Задача 3', 'Задача 4']}
-                />
             </Form>
         </section>
     );

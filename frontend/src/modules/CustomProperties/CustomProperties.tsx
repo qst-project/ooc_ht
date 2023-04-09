@@ -13,12 +13,14 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { buildingSlice } from '@/store/slices/BuildingSlice';
 
 function CustomProperties() {
+    const buildingData = useAppSelector(state => state.buildingReducer.buildingData);
     const groups = useAppSelector(state => state.buildingReducer.groups);
     const { setGroups } = buildingSlice.actions;
     const dispatch = useAppDispatch();
 
-    const [schemas, setSchemas] = useState<ICustomPropertySchema[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const schemas: ICustomPropertySchema[] = buildingData?.customProperties || [];
 
     useEffect(() => {
         const groupsSet = new Set<string>();
@@ -37,7 +39,7 @@ function CustomProperties() {
     };
 
     const addProperty = (schema: ICustomPropertySchema) => {
-        setSchemas(prev => [...prev, schema]);
+        // setSchemas(prev => [...prev, schema]);
         closeModal();
     };
 
