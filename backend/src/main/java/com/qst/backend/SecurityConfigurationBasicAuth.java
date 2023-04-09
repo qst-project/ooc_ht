@@ -17,14 +17,11 @@ public class SecurityConfigurationBasicAuth {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().and()
-                .authorizeHttpRequests((authz) -> authz
-//                        .requestMatchers(new AntPathRequestMatcher("**")).permitAll()
+        http.csrf().disable().cors().disable().authorizeHttpRequests((authz) -> authz
+//                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
 //                        .antMatchers("/navigation/**").hasRole("CAPTAIN")
 //                        .antMatchers("/cantina/**").hasRole("CREW")
-                                .anyRequest().authenticated()
-                )
-                .httpBasic(Customizer.withDefaults());
+                .anyRequest().authenticated()).httpBasic(Customizer.withDefaults());
         return http.build();
     }
 }

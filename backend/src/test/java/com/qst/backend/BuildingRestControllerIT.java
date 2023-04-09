@@ -1,19 +1,25 @@
 package com.qst.backend;
 
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.spi.json.GsonJsonProvider;
+import com.qst.backend.model.pg.Building;
+import com.qst.backend.model.pg.User;
+import com.qst.backend.repository.BuildingRepository;
+import com.qst.backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,8 +28,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
+@ComponentScan("com.qst.backend.repository")
 class BuildingRestControllerIT {
+    @Autowired
+    private BuildingRepository buildingRepository;
+    @Autowired
+    private UserRepository userRepository;
     private MockMvc mockMvc;
+
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext) {
@@ -31,11 +43,6 @@ class BuildingRestControllerIT {
                 .build();
     }
 
-    String readJsonProperty(String json, String jsonpath) {
-        Configuration conf = Configuration.builder().jsonProvider(new GsonJsonProvider()).build();
-
-        return JsonPath.using(conf).parse(json).read(jsonpath).toString().replace("\"", "");
-    }
 
     @Test
     void createAndGetBuilding() throws Exception {
@@ -94,4 +101,36 @@ class BuildingRestControllerIT {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void createComments() throws Exception {
+        Building building = new Building();
+
+    }
+
+    @Test
+    @WithMockUser(username = "user1", password = "pwd", roles = "USER")
+    void createCommentAndGet() throws Exception {
+        Building building = new Building();
+        buildingRepository.save(building);
+        User user = new User();
+        user.username = UUID.randomUUID().toString();
+        user.password = "2";
+        userRepository.save(user);
+        String createComment = """
+                {
+                    "text": "my comment",
+                    "mentions": [%s]
+                }
+                """.formatted(user.id);
+        String id = mockMvc.perform(post("/building/%s/comment".formatted(building.id))
+                .contentType("application/json")
+                .content(createComment)
+        ).andReturn().getResponse().getContentAsString();
+        long commentId = Long.parseLong(id);
+        mockMvc.perform(get("/building/%s/comments".formatted(building.id)))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$[0].text").value(("my comment"))
+                );
+    }
 }
