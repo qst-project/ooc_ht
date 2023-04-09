@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -98,6 +98,7 @@ public class BuildingRestController {
         buildingRepository.save(building);
         if (patchRequest.getCustomAttributes() != null) {
             buildingCustomAttributeRepository.deleteAll(building.attributes);
+            building.attributes = Collections.emptySet();
             buildingSaver.saveWithProperties(building, patchRequest.getCustomAttributes());
         }
         return buildingToFullBuildingWeb.apply(building);
