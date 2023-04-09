@@ -1,0 +1,20 @@
+.top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cover {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.descr {
+    margin-top: 32px;
+    font-size: 16px;
+}
+
+.descr-title {
+    font-size: 24px;
+}

@@ -43,8 +43,9 @@ export function parseBuildingDataToBack(data: IBuildingData, values: Record<stri
         fact_owner: values.fact_owner,
         owner: values.owner,
         district: values.district,
+        name: values.name,
     };
-    console.log(buildingData);
+    console.log(values);
 
     data.customProperties.forEach(property => {
         const value = values[property.label];

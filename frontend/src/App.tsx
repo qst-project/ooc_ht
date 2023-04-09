@@ -9,12 +9,20 @@ import {
   MAIN_PAGE_ROUTE,
   SECOND_PAGE_ROUTE,
   NEW_BUILDING_PAGE_ROUTE,
+<<<<<<< HEAD
   TASKS_PAGE_ROUTE,
+=======
+  PARLEY_PAGE_ROUTE,
+>>>>>>> db8092e9308b5e4d8904150c30d2406abf1aff2b
 } from '@/consts';
 import PageLayout from '@/modules/PageLayout';
 import BuildingPage from '@/pages/BuildingPage';
 import NewBuildingPage from '@/pages/NewBuildingPage/NewBuildingPage';
+<<<<<<< HEAD
 import TaskPage from '@/pages/TaskPage';
+=======
+import ParleyPage from '@/pages/ParleyPage';
+>>>>>>> db8092e9308b5e4d8904150c30d2406abf1aff2b
 
 function App() {
   return (
@@ -48,6 +56,7 @@ function App() {
                 }
               />
               <Route
+<<<<<<< HEAD
                 path={TASKS_PAGE_ROUTE}
                 element={
                   <TaskPage />
@@ -59,6 +68,19 @@ function App() {
                   <NewBuildingPage />
                 }
               />
+=======
+                path={`${PARLEY_PAGE_ROUTE}/:id`}
+                element={
+                  <ParleyPage />
+                }
+              />
+                <Route
+                  path={NEW_BUILDING_PAGE_ROUTE}
+                  element={
+                    <NewBuildingPage />
+                  }
+                />
+>>>>>>> db8092e9308b5e4d8904150c30d2406abf1aff2b
             </Routes>
           </PageLayout>
         </BrowserRouter>

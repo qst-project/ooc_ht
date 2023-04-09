@@ -6,6 +6,7 @@ import { parseBuildingDataFromBack } from '@/utils/parsers';
 
 export const fetchBuilding = (buildingId: number) => async (dispatch: AppDispatch) => {
     dispatch(buildingSlice.actions.setIsLoading(true));
+    dispatch(buildingSlice.actions.setIsNew(false));
     const res = await axiosInstance.get<IBuildingDataBack>(`${API_URL}/building/${buildingId}`);
     const buildingData = parseBuildingDataFromBack(res.data);
     dispatch(buildingSlice.actions.setBuildingData(buildingData));

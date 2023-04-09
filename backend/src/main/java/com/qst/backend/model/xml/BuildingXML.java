@@ -20,6 +20,8 @@ public class BuildingXML {
     public String owner;
     public String fact_owner;
     public String about;
+    public String status;
+    public String description;
 
     public List<CustomAttributeXML> customAttributes;
 }

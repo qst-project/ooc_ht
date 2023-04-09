@@ -12,6 +12,14 @@ public class BuildingToPreviewBuilding implements Function<Building, BuildingPre
 
     @Override
     public BuildingPreviewWeb apply(Building building) {
-        return new BuildingPreviewWeb(building.id, building.name);
+        return new BuildingPreviewWeb(
+                building.id,
+                building.name,
+                building.type,
+                building.address,
+                building.district,
+                building.county,
+                building.status
+        );
     }
 }

@@ -23,6 +23,8 @@ public class BuildingXMLToBuilding implements Function<BuildingXML, Building> {
         building.owner = buildingXML.owner;
         building.fact_owner = buildingXML.fact_owner;
         building.about = buildingXML.about;
+        building.status = buildingXML.status;
+        building.description = buildingXML.description;
         return building;
     }
 }

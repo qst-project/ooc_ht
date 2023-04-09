@@ -19,6 +19,8 @@ public class FullBuildingWeb {
     public String owner;
     public String fact_owner;
     public String about;
+    public String status;
+    public String description;
 
     Map<String, Map<String, CreateCustomAttributeWeb>> customAttributes;
 }
