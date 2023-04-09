@@ -102,12 +102,6 @@ class BuildingRestControllerIT {
     }
 
     @Test
-    void createComments() throws Exception {
-        Building building = new Building();
-
-    }
-
-    @Test
     @WithMockUser(username = "user1", password = "pwd", roles = "USER")
     void createCommentAndGet() throws Exception {
         Building building = new Building();
@@ -133,4 +127,35 @@ class BuildingRestControllerIT {
                         jsonPath("$[0].text").value(("my comment"))
                 );
     }
+
+    @Test
+    @WithMockUser(username = "user1", password = "pwd", roles = "USER")
+    void createTaskAndGet() throws Exception {
+        Building building = new Building();
+        buildingRepository.save(building);
+        User user = new User();
+        user.username = UUID.randomUUID().toString();
+        user.password = "2";
+        userRepository.save(user);
+
+        String createTask = """
+                {
+                    "title": "my comment",
+                    "about": "about",
+                    "status": "new",
+                    "assignee": %s
+                }
+                """.formatted(user.id);
+        String id = mockMvc.perform(post("/building/%s/task".formatted(building.id))
+                .contentType("application/json")
+                .content(createTask)
+        ).andReturn().getResponse().getContentAsString();
+        mockMvc.perform(get("/building/%s/comments".formatted(building.id)))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$[0].text").value(("my comment"))
+                );
+        System.out.println(id);
+    }
+
 }

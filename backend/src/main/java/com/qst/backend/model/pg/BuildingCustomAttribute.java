@@ -1,6 +1,7 @@
 package com.qst.backend.model.pg;
 
 import jakarta.persistence.*;
+import org.jetbrains.annotations.NotNull;
 
 @Entity
 @Table(name = "building_custom_attribute")
@@ -8,8 +9,11 @@ public class BuildingCustomAttribute {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
+    @NotNull
     public String groupName;
+    @NotNull
     public String name;
+    @NotNull
     public String value;
     public String meta;
 

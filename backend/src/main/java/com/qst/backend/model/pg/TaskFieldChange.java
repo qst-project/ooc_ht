@@ -7,20 +7,16 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "task_change_history")
-public class TaskChangeHistory {
+@Table(name = "task_field_change")
+public class TaskFieldChange {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_date")
-    public Date createdDate;
-
-    @OneToMany(mappedBy = "changeHistory")
-    public Set<TaskFieldChange> changes;
-
+    public String type;
+    public String name;
+    @Lob
+    public String value;
     @ManyToOne
     @JoinColumn(name = "task_change_history_id")
-    public Task task;
+    public TaskChangeHistory changeHistory;
 }
