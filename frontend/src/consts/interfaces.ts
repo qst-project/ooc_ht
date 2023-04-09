@@ -32,3 +32,10 @@ export interface IBuildingDataBack {
     owner?: string,
     type?: string,
 }
+
+export interface ICommentsData {
+    author: string,
+    text: string,
+    id: number,
+    replies: ICommentsData[],
+}

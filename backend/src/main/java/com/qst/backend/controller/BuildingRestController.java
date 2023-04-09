@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,11 +88,10 @@ public class BuildingRestController {
         building.owner = patchRequest.owner != null ? patchRequest.owner : building.owner;
         building.fact_owner = patchRequest.fact_owner != null ? patchRequest.fact_owner : building.fact_owner;
         building.about = patchRequest.about != null ? patchRequest.about : building.about;
+        buildingRepository.save(building);
         if (patchRequest.getCustomAttributes() != null) {
             buildingCustomAttributeRepository.deleteAll(building.attributes);
             buildingSaver.saveWithProperties(building, patchRequest.getCustomAttributes());
-        } else {
-            buildingRepository.save(building);
         }
         return buildingToFullBuildingWeb.apply(building);
     }
@@ -167,5 +167,11 @@ public class BuildingRestController {
                 .collect(Collectors.toList());
         taskFieldChangeRepository.saveAll(changes);
         return buildingComment.id;
+    }
+    @GetMapping("/building/{buildingId}/task")
+    public Long getTask(@PathVariable @NotNull Long buildingId, @RequestBody CreateTaskWeb createTaskWeb) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User user = userRepository.findByUsername(username);
+        return 1L;
     }
 }

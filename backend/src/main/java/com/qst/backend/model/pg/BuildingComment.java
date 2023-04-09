@@ -1,6 +1,7 @@
 package com.qst.backend.model.pg;
 
 import jakarta.persistence.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -15,6 +16,7 @@ public class BuildingComment {
 
     @ManyToOne
     @JoinColumn(name = "building_comment_id")
+    @NotNull
     public User author;
 
     @ManyToOne

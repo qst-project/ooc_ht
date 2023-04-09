@@ -33,7 +33,7 @@ function BuildingPage() {
             <div className='container'>
                 <EditButton />
                 <BuildingInfo />
-                <CommentsAndTasks />
+                <CommentsAndTasks buildingId={Number(buildingId)} />
             </div>
         </div>
     );
