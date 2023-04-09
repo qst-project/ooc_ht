@@ -2,9 +2,11 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import buildingReducer from '@/store/slices/BuildingSlice';
+import commentsReducer from '@/store/slices/CommentsSlice';
 
 const rootReducer = combineReducers({
     buildingReducer,
+    commentsReducer,
 });
 
 export const setupStore = () => {
