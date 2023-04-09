@@ -16,7 +16,8 @@ import java.util.List;
 public class CreateTaskWeb {
     public String status;
     public String title;
-    public String text;
+    public Long assignee;
+    public String about;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ",timezone = "UTC")
     public Instant deadline;
     public List<Long> mentions;

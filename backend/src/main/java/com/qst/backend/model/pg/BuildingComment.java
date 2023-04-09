@@ -1,17 +1,20 @@
 package com.qst.backend.model.pg;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "building_comment")
+@ToString(exclude = {"building", "task"})
+@EqualsAndHashCode(exclude = {"building", "task"})
 public class BuildingComment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
-    @Lob
     public String text;
 
     @ManyToOne

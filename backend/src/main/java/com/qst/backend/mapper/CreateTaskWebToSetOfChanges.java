@@ -26,6 +26,13 @@ public class CreateTaskWebToSetOfChanges implements Function<CreateTaskWeb, Set<
             taskFieldChange.value = createTaskWeb.title;
             fieldChanges.add(taskFieldChange);
         }
+        if (createTaskWeb.about != null) {
+            TaskFieldChange taskFieldChange = new TaskFieldChange();
+            taskFieldChange.type = "POST";
+            taskFieldChange.name = "about";
+            taskFieldChange.value = createTaskWeb.about;
+            fieldChanges.add(taskFieldChange);
+        }
         if (createTaskWeb.deadline != null) {
             TaskFieldChange taskFieldChange = new TaskFieldChange();
             taskFieldChange.type = "POST";
@@ -33,18 +40,18 @@ public class CreateTaskWebToSetOfChanges implements Function<CreateTaskWeb, Set<
             taskFieldChange.value = createTaskWeb.deadline.toString();
             fieldChanges.add(taskFieldChange);
         }
-        if (createTaskWeb.text != null) {
-            TaskFieldChange taskFieldChange = new TaskFieldChange();
-            taskFieldChange.type = "POST";
-            taskFieldChange.name = "text";
-            taskFieldChange.value = createTaskWeb.text;
-            fieldChanges.add(taskFieldChange);
-        }
         if (createTaskWeb.status != null) {
             TaskFieldChange taskFieldChange = new TaskFieldChange();
             taskFieldChange.type = "POST";
             taskFieldChange.name = "status";
             taskFieldChange.value = createTaskWeb.status;
+            fieldChanges.add(taskFieldChange);
+        }
+        if (createTaskWeb.assignee != null) {
+            TaskFieldChange taskFieldChange = new TaskFieldChange();
+            taskFieldChange.type = "POST";
+            taskFieldChange.name = "assignee";
+            taskFieldChange.value = createTaskWeb.assignee.toString();
             fieldChanges.add(taskFieldChange);
         }
         return fieldChanges;
