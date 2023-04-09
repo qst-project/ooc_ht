@@ -129,7 +129,7 @@ class BuildingRestControllerIT {
         String createReply = """
                 {
                     "text": "reply",
-                    "replyTo": [%s]
+                    "replyTo": %s
                 }
                 """.formatted(commentId);
         mockMvc.perform(post("/building/%s/comment".formatted(building.id))
@@ -137,8 +137,12 @@ class BuildingRestControllerIT {
                         .content(createReply)
                 )
                 .andExpectAll(
+                        status().isOk()
+                );
+        mockMvc.perform(get("/building/%s/comments".formatted(building.id)))
+                .andExpectAll(
                         status().isOk(),
-                        jsonPath("$[0].replies[0].about").value(("my comment"))
+                        jsonPath("$[0].replies[0].text").value(("reply"))
                 );
     }
 

@@ -8,8 +8,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "building_comment")
-@ToString(exclude = {"building", "task"})
-@EqualsAndHashCode(exclude = {"building", "task"})
+//@ToString(exclude = {"building", "task"})
+//@EqualsAndHashCode(exclude = {"building", "task"})
 public class BuildingComment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,8 +23,8 @@ public class BuildingComment {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     public BuildingComment parent;
-    @OneToMany
-    @JoinColumn(referencedColumnName = "id")
+
+    @OneToMany(mappedBy="parent")
     public Set<BuildingComment> replies;
 
     @ManyToOne

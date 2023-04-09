@@ -133,6 +133,7 @@ public class BuildingRestController {
     public List<BuildingCommentWeb> getComments(@PathVariable @NotNull Long buildingId) {
         Building building = buildingRepository.findById(buildingId).orElseThrow();
         return building.comments.stream()
+                .filter(e -> e.parent == null)
                 .map(buildingCommentToBuildingCommentWeb)
                 .collect(Collectors.toList());
     }
