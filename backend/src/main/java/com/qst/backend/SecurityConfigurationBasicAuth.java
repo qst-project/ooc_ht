@@ -17,7 +17,7 @@ public class SecurityConfigurationBasicAuth {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().disable().authorizeHttpRequests((authz) -> authz
+        http.csrf().disable().cors().and().authorizeHttpRequests((authz) -> authz
 //                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
 //                        .antMatchers("/navigation/**").hasRole("CAPTAIN")
 //                        .antMatchers("/cantina/**").hasRole("CREW")
