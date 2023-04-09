@@ -1,1 +1,1 @@
-export { fetchBuilding } from './fetchBuilding';
+export * from './fetchBuilding';

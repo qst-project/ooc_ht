@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Button, Input, InputRef, Modal, Space, Table } from 'antd';
+import { Button, Input, InputRef, Modal, Row, Space, Table } from 'antd';
 import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { ColumnType, FilterConfirmProps, FilterValue, SorterResult } from 'antd/es/table/interface';
 
 import AddNewObject from '@/components/AddNewObject';
+// import { fetchBuildings } from '@/store/actions';
+// import { useAppDispatch } from '@/store';
 
 interface DataType {
     key: string;
@@ -28,6 +30,8 @@ interface TableParams {
 type DataIndex = keyof DataType;
 
 function RegistryListModule() {
+    // const dispatch = useAppDispatch();
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [searchText, setSearchText] = useState('');
@@ -229,8 +233,28 @@ function RegistryListModule() {
         }
     };
 
-    const fetchData = useCallback(() => {
+    const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+    };
+    const hasSelected = selectedRowKeys.length > 0;
+
+    const start = () => {
         setLoading(true);
+        // ajax request after empty completing
+        setTimeout(() => {
+            setSelectedRowKeys([]);
+            setLoading(false);
+        }, 1000);
+    };
+
+    const fetchData = useCallback(() => {
+        // setLoading(true);
         fetch('https://randomuser.me/api?results=20')
             .then((res) => res.json())
             .then(({ results }) => {
@@ -250,20 +274,36 @@ function RegistryListModule() {
 
     useEffect(() => {
         fetchData();
+        // dispatch(fetchBuildings(''));
     }, []);
 
     return (
         <Space direction={'vertical'} style={{ width: '100%' }}>
             <Table
+                rowSelection={rowSelection}
                 columns={columns}
                 loading={loading}
                 pagination={tableParams.pagination}
                 dataSource={data}
                 onChange={handleTableChange}
             />
-            <Button type='primary' onClick={() => setOpen(true)}>
-                Добавить новый объект
-            </Button>
+            <Row justify={'start'}>
+                <Button
+                    type='primary'
+                    onClick={start}
+                    disabled={!hasSelected}
+                    loading={loading}
+                    style={{ marginRight: '10px' }}
+                >
+                    Сбросить
+                </Button>
+                <Button type='primary' style={{ marginRight: '10px' }} onClick={() => setOpen(true)}>
+                    Добавить новый объект
+                </Button>
+                <Button type='primary' onClick={() => setOpen(true)}>
+                    Экспортировать в xml
+                </Button>
+            </Row>
             <Modal
                 title={'Создание нового объекта'}
                 centered
