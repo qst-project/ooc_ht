@@ -16,7 +16,7 @@ function Notifications({ setCollapsed, collapsed }: NotificationsProps) {
                     color: Colors.PRIMARY,
                     fontSize: '35px',
                 }} />
-                <Typography.Text style={{ fontSize: '24px' }}>Уведомления</Typography.Text>
+                <Typography.Text style={{ fontSize: '20px' }}>Уведомления</Typography.Text>
             </Space>
         </Row>
 

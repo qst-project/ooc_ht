@@ -3,10 +3,12 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import buildingReducer from '@/store/slices/BuildingSlice';
 import commentsReducer from '@/store/slices/CommentsSlice';
+import taskReducer from '@/store/slices/TasksSlice';
 
 const rootReducer = combineReducers({
     buildingReducer,
     commentsReducer,
+    taskReducer,
 });
 
 export const setupStore = () => {

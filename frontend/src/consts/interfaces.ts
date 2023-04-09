@@ -39,3 +39,12 @@ export interface ICommentsData {
     id: number,
     replies: ICommentsData[],
 }
+
+
+export interface ITaskItemData {
+    id: number;
+    about?: string;
+    title: string;
+    deadline?: string;
+    assignee?: string;
+}
