@@ -4,8 +4,21 @@
     gap: 48px;
 }
 
-.descr {
-    padding: 20px;
-    border: 1px solid #B1B1B1;
-    border-radius: 10px;
+.save {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    font-size: 48px;
+    font-weight: 700;
+    flex-grow: 1;
+}
+
+.top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

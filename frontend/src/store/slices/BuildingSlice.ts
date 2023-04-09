@@ -8,12 +8,14 @@ interface BuildingState {
     isEdit: boolean,
     groups: string[],
     buildingData?: IBuildingData,
+    isNew: boolean,
 }
 
 const initialState: BuildingState = {
     isLoading: false,
     isEdit: false,
     groups: [],
+    isNew: false,
 };
 
 export const buildingSlice = createSlice({
@@ -47,6 +49,9 @@ export const buildingSlice = createSlice({
             if (state.buildingData) {
                 state.buildingData.customProperties = state.buildingData.customProperties.filter(property => property.name !== action.payload);
             }
+        },
+        setIsNew(state, action: PayloadAction<boolean>) {
+            state.isNew = action.payload;
         },
     },
 });

@@ -8,19 +8,30 @@ import ImageList from '@/components/ImageList';
 import MainProperties from '@/components/MainProperties';
 import CustomProperties from '@/modules/CustomProperties';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { postBuilding } from '@/store/actions/postBuilding';
+import { patchBuilding } from '@/store/actions/patchBuilding';
+import { postNewBuilding } from '@/store/actions/postNewBuilding';
+import EditButton from '@/modules/EditButton';
+import BuildingTitle from '@/components/BuildingTitle';
+import BuildingDescription from '@/components/BuildingDescription';
 
 function BuildingInfo() {
     const isEdit = useAppSelector(state => state.buildingReducer.isEdit);
     const buildingData = useAppSelector(state => state.buildingReducer.buildingData);
+    const isNew = useAppSelector(state => state.buildingReducer.isNew);
     const dispatch = useAppDispatch();
     const [form] = Form.useForm();
 
     const handleForm = (values: any) => {
         if (buildingData) {
-            dispatch(postBuilding(values, buildingData));
+            if (isNew) {
+                dispatch(postNewBuilding(buildingData, values));
+            } else {
+                dispatch(patchBuilding(buildingData, values));
+            }
         }
     };
+
+    if (!buildingData) return null;
 
     return (
         <section className={styles.main}>
@@ -30,6 +41,10 @@ function BuildingInfo() {
                 onFinish={handleForm}
                 form={form}
             >
+                <div className={styles.top}>
+                    <BuildingTitle title={buildingData.name} />
+                    <EditButton />
+                </div>
                 <ImageList srcList={[
                     'https://www.tiafotc.org/wp-content/uploads/2020/07/CLTHQ_ArticleImage_1200x630.jpg',
                     'https://i.pinimg.com/736x/52/9d/27/529d278097123ba8b482ea3f8ce9112f.jpg',
@@ -40,22 +55,15 @@ function BuildingInfo() {
                 ]} />
                 <MainProperties />
                 <CustomProperties />
-                <div>
-                    <h2 className={styles['descr-title']}>Описание:</h2>
-                    <p className={styles.descr}>
-                        Добро пожаловать на наш сайт недвижимости! Мы предлагаем широкий выбор жилой и коммерческой
-                        недвижимости в различных районах города. Наша команда профессиональных агентов готова помочь
-                        вам в выборе и покупке или аренде недвижимости, которая соответствует вашим потребностям и бюджету.
-                    </p>
-                </div>
+                <BuildingDescription text={'aaaaadf asd fasd asdf a'} />
                 {isEdit && (
-                    <Form.Item>
+                    <Form.Item className={styles.save}>
                         <Button
                             size='large'
                             type='primary'
                             htmlType='submit'
                         >
-                            Сохранить изменения
+                            {isNew ? 'Добавить в реестр' : 'Сохранить изменения'}
                         </Button>
                     </Form.Item>
                 )}

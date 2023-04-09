@@ -10,7 +10,6 @@ import CommentsAndTasks from '@/modules/CommentsAndTasks';
 
 import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchBuilding } from '@/store/actions';
-import EditButton from '@/modules/EditButton';
 import Loading from '@/components/Loading';
 
 function BuildingPage() {
@@ -31,7 +30,6 @@ function BuildingPage() {
     return (
         <div className={styles.main}>
             <div className='container'>
-                <EditButton />
                 <BuildingInfo />
                 <CommentsAndTasks buildingId={Number(buildingId)} />
             </div>
