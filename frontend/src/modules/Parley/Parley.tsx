@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { Card } from 'antd';
+
 import styles from './Parley.module.scss';
 
-import { Card } from 'antd';
 
 import ParleyProperties from '@/components/ParleyProperties';
 import CommentsAndTasks from '@/modules/CommentsAndTasks';
