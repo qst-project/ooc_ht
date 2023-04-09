@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import styles from './NavMenu.module.scss';
 
-import { MAIN_PAGE_ROUTE, SECOND_PAGE_ROUTE } from '@/consts';
+import { MAIN_PAGE_ROUTE, MY_TASKS_PAGE_ROUTE, SECOND_PAGE_ROUTE } from '@/consts';
 
 const menuItems = [
   {
@@ -13,8 +13,8 @@ const menuItems = [
   },
   {
     key: '2',
-    label: <Link to={SECOND_PAGE_ROUTE}>Мои задачи</Link>,
-    pathname: SECOND_PAGE_ROUTE,
+    label: <Link to={MY_TASKS_PAGE_ROUTE}>Мои задачи</Link>,
+    pathname: MY_TASKS_PAGE_ROUTE,
   },
   {
     key: '3',
@@ -25,16 +25,16 @@ const menuItems = [
 
 function NavMenu() {
   const location = useLocation();
-  let selectedKeys = '1';
+  let selectedKeys = '';
   switch (location.pathname) {
     case MAIN_PAGE_ROUTE:
       selectedKeys = '1';
       break;
-    case SECOND_PAGE_ROUTE:
+    case MY_TASKS_PAGE_ROUTE:
       selectedKeys = '2';
       break;
     default:
-      selectedKeys = '1';
+      selectedKeys = '';
   }
 
   return (

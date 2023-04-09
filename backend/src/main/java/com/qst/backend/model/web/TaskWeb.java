@@ -11,5 +11,6 @@ public class TaskWeb {
     public String about;
     public String status;
     public String deadline;
+    public Long buildingId;
     public UserPreviewWeb assignee;
 }

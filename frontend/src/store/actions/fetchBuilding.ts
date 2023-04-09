@@ -1,3 +1,5 @@
+import { saveAs} from 'file-saver';
+
 import { AppDispatch } from '@/store';
 import { buildingSlice } from '@/store/slices/BuildingSlice';
 import { axiosInstance } from '@/api';
@@ -20,3 +22,18 @@ export const fetchBuildings = (params: string) => async (dispatch: AppDispatch) 
     dispatch(buildingSlice.actions.setIsLoading(false));
 };
 
+export const exportXMLs = (ids: number[]) => async (dispatch: AppDispatch) => {
+    dispatch(buildingSlice.actions.setIsLoading(true));
+    const res = await axiosInstance.get(`${API_URL}/buildings/${ids.join(',')}/export`,  {responseType: 'blob'});
+    saveAs(res.data, 'document.zip');
+    dispatch(buildingSlice.actions.setIsLoading(false));
+};
+
+export const importXML = (file: any) => async (dispatch: AppDispatch) => {
+    dispatch(buildingSlice.actions.setIsLoading(true));
+    const res = await axiosInstance.post(`${API_URL}/buildings/import`, {
+        file: file,
+    });
+    console.log(res);
+    dispatch(buildingSlice.actions.setIsLoading(false));
+};

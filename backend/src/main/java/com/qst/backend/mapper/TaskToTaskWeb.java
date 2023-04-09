@@ -46,6 +46,7 @@ public class TaskToTaskWeb implements Function<Task, TaskWeb> {
                 getValueOrNull(about),
                 getValueOrNull(status),
                 getValueOrNull(deadline),
+                task.comment.building.id,
                 assigneePreview
         );
     }

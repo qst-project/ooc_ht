@@ -20,7 +20,7 @@ public class SecurityConfigurationBasicAuth {
         http.csrf().disable().cors().and().authorizeHttpRequests((authz) -> authz
 //                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
 //                        .antMatchers("/navigation/**").hasRole("CAPTAIN")
-//                        .antMatchers("/cantina/**").hasRole("CREW")
+                .requestMatchers("/buildings/import").permitAll()
                 .anyRequest().authenticated()).httpBasic(Customizer.withDefaults());
         return http.build();
     }
