@@ -25,7 +25,7 @@ function BuildingPage() {
         <div className={styles.main}>
             <div className='container'>
                 <BuildingInfo />
-                <CommentsAndTasks />
+                <CommentsAndTasks buildingId={Number(buildingId)} />
             </div>
         </div>
     );

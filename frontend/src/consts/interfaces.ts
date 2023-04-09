@@ -12,3 +12,10 @@ export interface IBuildingDataBack {
         meta: string,
     }>>
 }
+
+export interface ICommentsData {
+    author: string,
+    text: string,
+    id: number,
+    replies: ICommentsData[],
+}

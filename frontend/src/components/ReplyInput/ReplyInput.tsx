@@ -2,19 +2,27 @@ import { Button, DatePicker, Form, Input, Select, Upload } from 'antd';
 import { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 
+import { createComment } from '@/store/actions';
+import { useAppDispatch } from '@/store';
+
 interface ReplyInputProps {
+    buildingId: number;
+    commentId: number;
     openCreateTask: boolean;
     modeCreateTask: boolean;
     setCreateTask: Function;
 }
 
 function ReplyInput({
+    buildingId,
+    commentId,
     modeCreateTask,
     openCreateTask,
     setCreateTask,
 }: ReplyInputProps) {
     const [form] = Form.useForm();
     const [answer, setAnswer] = useState('');
+    const dispatch = useAppDispatch();
     const onChangeInput = (changedFields: any) => {
         setAnswer(changedFields.answer);
         if (answer.length > 2) {
@@ -30,7 +38,7 @@ function ReplyInput({
             initialValues={{ answer: answer }}
             layout='inline'
             onFinish={({ answer }) => {
-                console.log(answer);
+                dispatch(createComment(buildingId, answer, commentId));
             }}
         >
             <Form.Item
