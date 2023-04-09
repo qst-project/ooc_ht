@@ -43,6 +43,10 @@ function CustomProperties() {
         closeModal();
     };
 
+    const removeProperty = (name: string) => {
+        dispatch(buildingSlice.actions.removeProperty(name));
+    };
+
     if (!buildingData) return null;
 
     return (
@@ -58,6 +62,7 @@ function CustomProperties() {
                                 options={schema.options}
                                 key={schema.label}
                                 value={schema.value}
+                                onRemove={removeProperty}
                             />
                         ))}
                     </Card>

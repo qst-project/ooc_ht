@@ -1,4 +1,11 @@
 .main {
+    display: flex;
+    gap: 8px;
+
+    :global(.ant-form-item) {
+        flex-grow: 1;
+    }
+
     :global(.ant-form-item-label) {
         width: 200px;
         text-align: start;
