@@ -209,7 +209,7 @@ public class BuildingRestController {
     public List<TaskWeb> getMyTasks() {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         User user = userRepository.findByUsername(username);
-        return taskRepository.findAll().map(taskToTaskWeb).stream()
+        return taskRepository.findAll().stream().map(taskToTaskWeb)
                 .filter(e -> e.assignee != null)
                 .filter(e -> Objects.equals(e.assignee.id, user.id))
                 .collect(Collectors.toList());

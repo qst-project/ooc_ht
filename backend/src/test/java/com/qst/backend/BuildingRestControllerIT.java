@@ -125,6 +125,21 @@ class BuildingRestControllerIT {
                         status().isOk(),
                         jsonPath("$[0].text").value(("my comment"))
                 );
+
+        String createReply = """
+                {
+                    "text": "reply",
+                    "replyTo": [%s]
+                }
+                """.formatted(commentId);
+        mockMvc.perform(post("/building/%s/comment".formatted(building.id))
+                        .contentType("application/json")
+                        .content(createReply)
+                )
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$[0].replies[0].about").value(("my comment"))
+                );
     }
 
     @Test

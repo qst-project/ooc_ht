@@ -7,9 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface TaskRepository extends CrudRepository<Task, Long> {
 
-    public Page<Task> findAllByCommentBuilding(Building building);
+    public List<Task> findAllByCommentBuilding(Building building);
 
-    public @NotNull Page<Task> findAll();
+    public @NotNull List<Task> findAll();
 }
