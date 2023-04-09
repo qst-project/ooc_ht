@@ -11,3 +11,14 @@ export const fetchBuilding = (buildingId: number) => async (dispatch: AppDispatc
     dispatch(buildingSlice.actions.setBuildingData(buildingData));
     dispatch(buildingSlice.actions.setIsLoading(false));
 };
+
+export const fetchBuildings = (params: string) => async (dispatch: AppDispatch) => {
+    dispatch(buildingSlice.actions.setIsLoading(true));
+    const res = await axiosInstance.get<IBuildingDataBack>(`${API_URL}/buildings`);
+    console.log('ответ');
+    console.log(res);
+    // const buildingData = parseBuildingData(res.data);
+    // dispatch(buildingSlice.actions.setBuildingData(buildingData));
+    // dispatch(buildingSlice.actions.setIsLoading(false));
+};
+
