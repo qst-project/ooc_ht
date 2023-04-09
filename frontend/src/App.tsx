@@ -9,10 +9,12 @@ import {
   MAIN_PAGE_ROUTE,
   SECOND_PAGE_ROUTE,
   NEW_BUILDING_PAGE_ROUTE,
+  PARLEY_PAGE_ROUTE,
 } from '@/consts';
 import PageLayout from '@/modules/PageLayout';
 import BuildingPage from '@/pages/BuildingPage';
 import NewBuildingPage from '@/pages/NewBuildingPage/NewBuildingPage';
+import ParleyPage from '@/pages/ParleyPage';
 
 function App() {
   return (
@@ -43,6 +45,12 @@ function App() {
                 path={`${BUILDINGS_PAGE_ROUTE}/:id`}
                 element={
                   <BuildingPage />
+                }
+              />
+              <Route
+                path={`${PARLEY_PAGE_ROUTE}/:id`}
+                element={
+                  <ParleyPage />
                 }
               />
                 <Route
