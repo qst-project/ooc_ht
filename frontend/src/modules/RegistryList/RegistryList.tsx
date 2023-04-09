@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button, Input, InputRef, Modal, Row, Space, Table } from 'antd';
 import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
@@ -7,6 +7,8 @@ import Highlighter from 'react-highlight-words';
 import { ColumnType, FilterConfirmProps, FilterValue, SorterResult } from 'antd/es/table/interface';
 
 import AddNewObject from '@/components/AddNewObject';
+import { useAppDispatch } from '@/store';
+import { fetchBuildings } from '@/store/actions';
 // import { fetchBuildings } from '@/store/actions';
 // import { useAppDispatch } from '@/store';
 
@@ -30,7 +32,7 @@ interface TableParams {
 type DataIndex = keyof DataType;
 
 function RegistryListModule() {
-    // const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -253,28 +255,9 @@ function RegistryListModule() {
         }, 1000);
     };
 
-    const fetchData = useCallback(() => {
-        // setLoading(true);
-        fetch('https://randomuser.me/api?results=20')
-            .then((res) => res.json())
-            .then(({ results }) => {
-                console.log(results);
-                setData(results);
-                setLoading(false);
-                setTableParams({
-                    ...tableParams,
-                    pagination: {
-                        ...tableParams.pagination,
-                        total: 20,
-                        // data.totalCount
-                    },
-                });
-            });
-    }, [tableParams]);
-
     useEffect(() => {
-        fetchData();
-        // dispatch(fetchBuildings(''));
+        // fetchData();
+        dispatch(fetchBuildings(''));
     }, []);
 
     return (

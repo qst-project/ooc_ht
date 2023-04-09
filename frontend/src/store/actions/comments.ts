@@ -11,17 +11,17 @@ export const fetchComments = (buildingId: number) => async (dispatch: AppDispatc
     dispatch(commentsSlice.actions.setIsLoading(false));
 };
 
-export const createComment = (buildingId: number, comment: string, commentId: number) => async (dispatch: AppDispatch) => {
+export const createComment = (buildingId: number, comment: string, commentId: number | undefined) => async (dispatch: AppDispatch) => {
     dispatch(commentsSlice.actions.setIsLoading(true));
-    const newComment = (comment: string, commentId: number) => {
+    const newComment = (comment: string, commentId: number | undefined) => {
         if (commentId) {
             return {
                 text: comment,
-                replyId: commentId,
+                replyTo: commentId,
             };
         }
         return {
-            comment: comment,
+            text: comment,
         };
     };
 
@@ -30,5 +30,25 @@ export const createComment = (buildingId: number, comment: string, commentId: nu
         newComment(comment, commentId),
     );
     console.log(res);
+    dispatch(commentsSlice.actions.setIsLoading(false));
+};
+
+export const createTask = (buildingId: number, task: any) => async (dispatch: AppDispatch) => {
+    dispatch(commentsSlice.actions.setIsLoading(true));
+    const res = await axiosInstance.post(
+        `${API_URL}/building/${buildingId}/task`,
+        task,
+    );
+    console.log(res);
+    dispatch(commentsSlice.actions.setIsLoading(false));
+};
+
+export const fetchTasks = (buildingId: number) => async (dispatch: AppDispatch) => {
+    dispatch(commentsSlice.actions.setIsLoading(true));
+    const res = await axiosInstance.get(
+        `${API_URL}/building/${buildingId}/tasks`,
+    );
+    console.log(res);
+    dispatch(commentsSlice.actions.setTasksData(res.data));
     dispatch(commentsSlice.actions.setIsLoading(false));
 };
