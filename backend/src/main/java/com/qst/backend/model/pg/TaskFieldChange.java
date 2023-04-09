@@ -14,7 +14,6 @@ public class TaskFieldChange {
     public Long id;
     public String type;
     public String name;
-    @Lob
     public String value;
     @ManyToOne
     @JoinColumn(name = "task_change_history_id")

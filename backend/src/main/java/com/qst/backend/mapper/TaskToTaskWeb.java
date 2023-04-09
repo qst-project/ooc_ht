@@ -24,20 +24,29 @@ public class TaskToTaskWeb implements Function<Task, TaskWeb> {
         this.userRepository = userRepository;
     }
 
+    public String getValueOrNull(TaskFieldChange taskFieldChange) {
+        if (taskFieldChange == null) {
+            return null;
+        }
+        return taskFieldChange.value;
+    }
+
     @Override
     public TaskWeb apply(Task task) {
         List<String> types = List.of("POST", "PATCH");
-        TaskFieldChange name = taskFieldChangeRepository.getTaskFieldChangeByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("name", types);
-        TaskFieldChange status = taskFieldChangeRepository.getTaskFieldChangeByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("status", types);
-        TaskFieldChange deadline = taskFieldChangeRepository.getTaskFieldChangeByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("deadline", types);
-        TaskFieldChange assignee = taskFieldChangeRepository.getTaskFieldChangeByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("assignee", types);
+        TaskFieldChange title = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("title", types);
+        TaskFieldChange about = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("about", types);
+        TaskFieldChange status = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("status", types);
+        TaskFieldChange deadline = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("deadline", types);
+        TaskFieldChange assignee = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("assignee", types);
         Long assigneeId = Long.valueOf(assignee.value);
         UserPreviewWeb assigneePreview = userRepository.findById(assigneeId).map(userToUserPreviewWeb).orElseThrow();
         return new TaskWeb(
                 task.id,
-                name.value,
-                status.value,
-                deadline.value,
+                getValueOrNull(title),
+                getValueOrNull(about),
+                getValueOrNull(status),
+                getValueOrNull(deadline),
                 assigneePreview
         );
     }

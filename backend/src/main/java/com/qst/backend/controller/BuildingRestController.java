@@ -18,12 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 public class BuildingRestController {
+    final TaskToTaskWeb taskToTaskWeb;
     final TaskChangeHistoryRepository taskChangeHistoryRepository;
     final TaskRepository taskRepository;
     final CreateTaskWebToSetOfChanges createTaskWebToSetOfChanges;
@@ -39,7 +40,8 @@ public class BuildingRestController {
     final BuildingToFullBuildingWeb buildingToFullBuildingWeb;
     final BuildingsArchiveService buildingsArchiveService;
 
-    public BuildingRestController(TaskChangeHistoryRepository taskChangeHistoryRepository, TaskRepository taskRepository, CreateTaskWebToSetOfChanges createTaskWebToSetOfChanges, TaskFieldChangeRepository taskFieldChangeRepository, BuildingCommentToBuildingCommentWeb buildingCommentToBuildingCommentWeb, BuildingRepository buildingRepository, BuildingCommentRepository buildingCommentRepository, UserRepository userRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
+    public BuildingRestController(TaskToTaskWeb taskToTaskWeb, TaskChangeHistoryRepository taskChangeHistoryRepository, TaskRepository taskRepository, CreateTaskWebToSetOfChanges createTaskWebToSetOfChanges, TaskFieldChangeRepository taskFieldChangeRepository, BuildingCommentToBuildingCommentWeb buildingCommentToBuildingCommentWeb, BuildingRepository buildingRepository, BuildingCommentRepository buildingCommentRepository, UserRepository userRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
+        this.taskToTaskWeb = taskToTaskWeb;
         this.taskChangeHistoryRepository = taskChangeHistoryRepository;
         this.taskRepository = taskRepository;
         this.createTaskWebToSetOfChanges = createTaskWebToSetOfChanges;
@@ -130,7 +132,7 @@ public class BuildingRestController {
     @GetMapping("/building/{buildingId}/comments")
     public List<BuildingCommentWeb> getComments(@PathVariable @NotNull Long buildingId) {
         Building building = buildingRepository.findById(buildingId).orElseThrow();
-        return buildingCommentRepository.findAllByBuilding(building).stream()
+        return building.comments.stream()
                 .map(buildingCommentToBuildingCommentWeb)
                 .collect(Collectors.toList());
     }
@@ -168,10 +170,25 @@ public class BuildingRestController {
         taskFieldChangeRepository.saveAll(changes);
         return buildingComment.id;
     }
-    @GetMapping("/building/{buildingId}/task")
-    public Long getTask(@PathVariable @NotNull Long buildingId, @RequestBody CreateTaskWeb createTaskWeb) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        User user = userRepository.findByUsername(username);
-        return 1L;
+
+    @GetMapping("/building/{buildingId}/task/{taskId}")
+    public TaskWeb getTask(@PathVariable @NotNull Long buildingId, @PathVariable @NotNull Long taskId) {
+        return taskRepository.findById(taskId).map(taskToTaskWeb).orElseThrow();
+    }
+
+    @PatchMapping("/building/{buildingId}/task/{taskId}")
+    public TaskWeb patchTask(@PathVariable @NotNull Long buildingId, @PathVariable @NotNull Long taskId, @RequestBody CreateTaskWeb createTaskWeb) {
+        Task task = taskRepository.findById(taskId).orElseThrow();
+
+        TaskChangeHistory taskChangeHistory = new TaskChangeHistory();
+        taskChangeHistory.task = task;
+        taskChangeHistoryRepository.save(taskChangeHistory);
+
+        List<TaskFieldChange> changes = createTaskWebToSetOfChanges.apply(createTaskWeb).stream()
+                .peek(e -> e.changeHistory = taskChangeHistory)
+                .collect(Collectors.toList());
+        taskFieldChangeRepository.saveAll(changes);
+
+        return taskRepository.findById(taskId).map(taskToTaskWeb).orElseThrow();
     }
 }

@@ -21,8 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -150,12 +149,21 @@ class BuildingRestControllerIT {
                 .contentType("application/json")
                 .content(createTask)
         ).andReturn().getResponse().getContentAsString();
-        mockMvc.perform(get("/building/%s/comments".formatted(building.id)))
+        mockMvc.perform(get("/building/%s/task/%s".formatted(building.id, id)))
                 .andExpectAll(
                         status().isOk(),
-                        jsonPath("$[0].text").value(("my comment"))
+                        jsonPath("$.title").value(("my comment")),
+                        jsonPath("$.assignee.username").value((user.username))
                 );
-        System.out.println(id);
+        String patchTask = """
+                {
+                    "title": "changed comment"
+                }
+                """;
+        mockMvc.perform(patch("/building/%s/task/%s".formatted(building.id, id)).content(patchTask))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.title").value(("changed comment"))
+                );
     }
-
 }

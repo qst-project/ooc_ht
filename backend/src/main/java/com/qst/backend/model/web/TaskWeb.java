@@ -7,7 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class TaskWeb {
     Long id;
-    String name;
+    String title;
+    String about;
     String status;
     String deadline;
     UserPreviewWeb assignee;
