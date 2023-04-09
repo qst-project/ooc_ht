@@ -40,7 +40,7 @@ public class FileController {
     }
 
     @PostMapping("/upload/{name}")
-    public String upload(@RequestParam MultipartFile inputFile, @PathVariable String name) {
+    public String upload(@RequestParam(name = "file") MultipartFile inputFile, @PathVariable String name) {
         File file = new File();
         file.hash = UUID.randomUUID().toString();
         file.name = name;
