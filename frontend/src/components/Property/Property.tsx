@@ -20,6 +20,10 @@ function Property({ name, label, type, options, value, onRemove }: PropertyProps
                 return (
                     <Input />
                 );
+            case PropertyType.NUMBER:
+                return (
+                    <Input type={PropertyType.NUMBER} />
+                );
             case PropertyType.SELECT:
                 return (
                     <Select
