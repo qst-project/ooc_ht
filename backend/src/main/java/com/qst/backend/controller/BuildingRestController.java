@@ -198,4 +198,10 @@ public class BuildingRestController {
 
         return taskRepository.findById(task.id).map(taskToTaskWeb).orElseThrow();
     }
+
+    @PatchMapping("/building/{buildingId}/tasks")
+    public List<TaskWeb> buildingTasks(@PathVariable @NotNull Long buildingId) {
+        Building building = buildingRepository.findById(buildingId).orElseThrow();
+        return taskRepository.findAllByCommentBuilding(building).stream().map(taskToTaskWeb).collect(Collectors.toList());
+    }
 }
