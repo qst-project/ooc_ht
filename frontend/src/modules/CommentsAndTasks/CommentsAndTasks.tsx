@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Avatar, Tabs } from 'antd';
 import { Comment } from '@ant-design/compatible';
 
 import styles from './CommentsAndTasks.module.scss';
+
+import ReplyComment from '@/components/ReplyComment/ReplyComment';
+import ReplyInput from '@/components/ReplyInput/ReplyInput';
+import CreateTask from '@/components/CreateTask';
+
 
 interface ICommentsData {
     author: string,
@@ -47,41 +52,54 @@ const mockCommentsData: ICommentsData[] = [
 ];
 
 function CommentsAndTasks() {
-    const [commentsData] = useState(mockCommentsData);
-    const [commentsStack, setCommentsStack] = useState<[ICommentsData, number][]>([]);
-    const _commentsStack: [ICommentsData, number][] = [];
-
-    function parseCommentsData(commentsData: ICommentsData[], deepLevel: number) {
-        commentsData.forEach(commentData => {
-            _commentsStack.push([commentData, deepLevel]);
-            parseCommentsData(commentData.replies, deepLevel + 1);
-        });
-    }
-
-    useEffect(() => {
-        parseCommentsData(commentsData, 0);
-        setCommentsStack(_commentsStack);
-    }, [commentsData]);
-
-    const BuildingComment = (data: ICommentsData[]) => (
-        data.map(
-            comment => (
-                <Comment
-                    actions={[<span key='comment-nested-reply-to'>Ответить</span>]}
-                    author={comment.author}
-                    avatar={<Avatar src='https://joeschmoe.io/api/v1/random' alt={comment.author} />}
-                    content={
-                        <p>
-                            {comment.text}
-                        </p>
-                    }
-                >
-                    {BuildingComment(comment.replies)}
-                </Comment>
-            ),
-        )
-
-    );
+    const BuildingComment = (data: ICommentsData[]) => {
+        return data.map(
+            (comment, index) => {
+                const [openReply, setOpenReply] = useState(false);
+                const [openCreateTask, setCreateTask] = useState(false);
+                const [modeCreateTask, setModeCreateTask] = useState(false);
+                return (
+                    <div key={index}>
+                        <Comment
+                            actions={[
+                                <ReplyComment
+                                    modeCreateTask={modeCreateTask}
+                                    setModeCreateTask={setModeCreateTask}
+                                    openReply={openReply}
+                                    setOpenReply={setOpenReply}
+                                    openCreateTask={openCreateTask}
+                                    setCreateTask={setCreateTask}
+                                />,
+                                openCreateTask ? (
+                                    <CreateTask
+                                        modeCreateTask={modeCreateTask}
+                                        setModeCreateTask={setModeCreateTask}
+                                    />)
+                                    : null,
+                            ]}
+                            author={comment.author}
+                            avatar={<Avatar src='https://joeschmoe.io/api/v1/random' alt={comment.author} />}
+                            content={
+                                <p>
+                                    {comment.text}
+                                </p>
+                            }
+                        >
+                            {BuildingComment(comment.replies)}
+                        </Comment>
+                        {
+                            openReply &&
+                            <ReplyInput
+                                modeCreateTask={modeCreateTask}
+                                openCreateTask={openCreateTask}
+                                setCreateTask={setCreateTask}
+                            />
+                        }
+                    </div>
+                );
+            },
+        );
+    };
 
     return (
         <Tabs
