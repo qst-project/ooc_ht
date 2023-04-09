@@ -1,3 +1,5 @@
-export interface ParleyPropertiesProps {
+import { IBuildingData } from '@/consts';
 
+export interface ParleyPropertiesProps {
+    buildingData: IBuildingData;
 }
