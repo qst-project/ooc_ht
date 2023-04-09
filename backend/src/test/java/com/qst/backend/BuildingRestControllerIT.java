@@ -127,8 +127,10 @@ class BuildingRestControllerIT {
                 .content(createComment)
         ).andReturn().getResponse().getContentAsString();
         long commentId = Long.parseLong(id);
-        String asd = mockMvc.perform(get("/building/%s/comments".formatted(building.id)))
-                .andReturn().getResponse().getContentAsString();
-        System.out.println(asd);
+        mockMvc.perform(get("/building/%s/comments".formatted(building.id)))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$[0].text").value(("my comment"))
+                );
     }
 }

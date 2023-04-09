@@ -1,6 +1,5 @@
 package com.qst.backend.model.pg;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity

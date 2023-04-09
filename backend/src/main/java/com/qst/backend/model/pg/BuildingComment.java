@@ -1,7 +1,8 @@
 package com.qst.backend.model.pg;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "building_comment")
@@ -17,8 +18,10 @@ public class BuildingComment {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
-    @JsonBackReference
-    public BuildingComment reply;
+    public BuildingComment parent;
+    @OneToMany
+    @JoinColumn(referencedColumnName = "id")
+    public Set<BuildingComment> replies;
 
     @ManyToOne
     @JoinColumn(name = "building_id")

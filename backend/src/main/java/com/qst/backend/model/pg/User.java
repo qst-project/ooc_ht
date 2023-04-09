@@ -17,6 +17,6 @@ public class User {
     public String password;
     public String fullName;
 
-    @OneToMany(mappedBy="author")
+    @OneToMany(mappedBy = "author")
     private Set<BuildingComment> comments;
 }

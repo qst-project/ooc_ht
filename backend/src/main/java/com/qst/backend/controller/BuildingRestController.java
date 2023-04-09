@@ -1,15 +1,13 @@
 package com.qst.backend.controller;
 
+import com.qst.backend.mapper.BuildingCommentToBuildingCommentWeb;
 import com.qst.backend.mapper.BuildingToFullBuildingWeb;
 import com.qst.backend.mapper.BuildingToPreviewBuilding;
 import com.qst.backend.mapper.CreateBuildingWebToBuilding;
 import com.qst.backend.model.pg.Building;
 import com.qst.backend.model.pg.BuildingComment;
 import com.qst.backend.model.pg.User;
-import com.qst.backend.model.web.BuildingPreviewWeb;
-import com.qst.backend.model.web.CreateBuildingCommentWeb;
-import com.qst.backend.model.web.CreateBuildingWeb;
-import com.qst.backend.model.web.FullBuildingWeb;
+import com.qst.backend.model.web.*;
 import com.qst.backend.repository.*;
 import com.qst.backend.service.BuildingsArchiveService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,19 +17,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 public class BuildingRestController {
+    final BuildingCommentToBuildingCommentWeb buildingCommentToBuildingCommentWeb;
     final BuildingRepository buildingRepository;
     final BuildingCommentRepository buildingCommentRepository;
     final UserRepository userRepository;
@@ -42,7 +39,8 @@ public class BuildingRestController {
     final BuildingToFullBuildingWeb buildingToFullBuildingWeb;
     final BuildingsArchiveService buildingsArchiveService;
 
-    public BuildingRestController(BuildingRepository buildingRepository, BuildingCommentRepository buildingCommentRepository, UserRepository userRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
+    public BuildingRestController(BuildingCommentToBuildingCommentWeb buildingCommentToBuildingCommentWeb, BuildingRepository buildingRepository, BuildingCommentRepository buildingCommentRepository, UserRepository userRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
+        this.buildingCommentToBuildingCommentWeb = buildingCommentToBuildingCommentWeb;
         this.buildingRepository = buildingRepository;
         this.buildingCommentRepository = buildingCommentRepository;
         this.userRepository = userRepository;
@@ -120,9 +118,17 @@ public class BuildingRestController {
         buildingComment.author = user;
         buildingComment.building = building;
         if (createBuildingCommentWeb.replyTo != null) {
-            buildingComment.reply = buildingCommentRepository.findById(createBuildingCommentWeb.replyTo).orElseThrow();
+            buildingComment.parent = buildingCommentRepository.findById(createBuildingCommentWeb.replyTo).orElseThrow();
         }
         buildingCommentRepository.save(buildingComment);
         return buildingComment.id;
+    }
+
+    @GetMapping("/building/{buildingId}/comments")
+    public List<BuildingCommentWeb> importBuildings(@PathVariable @NotNull Long buildingId) {
+        Building building = buildingRepository.findById(buildingId).orElseThrow();
+        return buildingCommentRepository.findAllByBuilding(building).stream()
+                .map(buildingCommentToBuildingCommentWeb)
+                .collect(Collectors.toList());
     }
 }
