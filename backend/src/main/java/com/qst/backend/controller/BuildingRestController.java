@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,10 +103,11 @@ public class BuildingRestController {
         return buildingToFullBuildingWeb.apply(building);
     }
 
-    @GetMapping("/buildings/{buildingIds}/export")
+    @GetMapping(value = "/buildings/{buildingIds}/export", produces = MediaType.ALL_VALUE)
     public void exportBuildings(@PathVariable @NotNull String buildingIds, HttpServletResponse response) throws IOException {
         List<Long> ids = Arrays.stream(buildingIds.split(",")).map(Long::parseLong).collect(Collectors.toList());
         byte[] bytes = buildingsArchiveService.createArchiveFromBuildings(ids);
+        response.setHeader("Content-Disposition", "attachment; filename=res.zip");
         IOUtils.copy(new ByteArrayInputStream(bytes), response.getOutputStream());
         response.flushBuffer();
     }

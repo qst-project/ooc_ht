@@ -60,7 +60,6 @@ class ParleyRestControllerIT {
         mockMvc.perform(post("/building/%s/task".formatted(building.id))
                 .contentType("application/json")
                 .content(createTask)).andExpect(status().isOk());
-
         mockMvc.perform(get("/parley/%s/tasks".formatted(parley.id)))
                 .andExpectAll(
                         status().isOk()
