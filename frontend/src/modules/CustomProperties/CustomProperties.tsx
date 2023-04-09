@@ -20,7 +20,11 @@ function CustomProperties() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const schemas: ICustomPropertySchema[] = buildingData?.customProperties || [];
+    const [schemas, setSchemas] = useState<ICustomPropertySchema[]>(buildingData?.customProperties || []);
+
+    useEffect(() => {
+        setSchemas(buildingData?.customProperties || []);
+    }, [buildingData]);
 
     useEffect(() => {
         const groupsSet = new Set<string>();
@@ -54,6 +58,7 @@ function CustomProperties() {
                                 name={schema.name}
                                 type={schema.type}
                                 options={schema.options}
+                                key={schema.label}
                             />
                         ))}
                     </Card>
