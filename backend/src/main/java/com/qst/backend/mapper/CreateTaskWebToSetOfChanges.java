@@ -45,6 +45,12 @@ public class CreateTaskWebToSetOfChanges implements Function<CreateTaskWeb, Set<
             taskFieldChange.value = createTaskWeb.assignee.toString();
             fieldChanges.add(taskFieldChange);
         }
+        if (createTaskWeb.files != null) {
+            TaskFieldChange taskFieldChange = new TaskFieldChange();
+            taskFieldChange.name = "files";
+            taskFieldChange.value = createTaskWeb.files;
+            fieldChanges.add(taskFieldChange);
+        }
         return fieldChanges;
     }
 }
