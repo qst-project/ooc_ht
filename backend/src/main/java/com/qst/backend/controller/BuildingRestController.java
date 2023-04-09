@@ -1,12 +1,7 @@
 package com.qst.backend.controller;
 
-import com.qst.backend.mapper.BuildingCommentToBuildingCommentWeb;
-import com.qst.backend.mapper.BuildingToFullBuildingWeb;
-import com.qst.backend.mapper.BuildingToPreviewBuilding;
-import com.qst.backend.mapper.CreateBuildingWebToBuilding;
-import com.qst.backend.model.pg.Building;
-import com.qst.backend.model.pg.BuildingComment;
-import com.qst.backend.model.pg.User;
+import com.qst.backend.mapper.*;
+import com.qst.backend.model.pg.*;
 import com.qst.backend.model.web.*;
 import com.qst.backend.repository.*;
 import com.qst.backend.service.BuildingsArchiveService;
@@ -28,6 +23,10 @@ import java.util.stream.Collectors;
 
 @RestController
 public class BuildingRestController {
+    final TaskChangeHistoryRepository taskChangeHistoryRepository;
+    final TaskRepository taskRepository;
+    final CreateTaskWebToSetOfChanges createTaskWebToSetOfChanges;
+    final TaskFieldChangeRepository taskFieldChangeRepository;
     final BuildingCommentToBuildingCommentWeb buildingCommentToBuildingCommentWeb;
     final BuildingRepository buildingRepository;
     final BuildingCommentRepository buildingCommentRepository;
@@ -39,7 +38,11 @@ public class BuildingRestController {
     final BuildingToFullBuildingWeb buildingToFullBuildingWeb;
     final BuildingsArchiveService buildingsArchiveService;
 
-    public BuildingRestController(BuildingCommentToBuildingCommentWeb buildingCommentToBuildingCommentWeb, BuildingRepository buildingRepository, BuildingCommentRepository buildingCommentRepository, UserRepository userRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
+    public BuildingRestController(TaskChangeHistoryRepository taskChangeHistoryRepository, TaskRepository taskRepository, CreateTaskWebToSetOfChanges createTaskWebToSetOfChanges, TaskFieldChangeRepository taskFieldChangeRepository, BuildingCommentToBuildingCommentWeb buildingCommentToBuildingCommentWeb, BuildingRepository buildingRepository, BuildingCommentRepository buildingCommentRepository, UserRepository userRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
+        this.taskChangeHistoryRepository = taskChangeHistoryRepository;
+        this.taskRepository = taskRepository;
+        this.createTaskWebToSetOfChanges = createTaskWebToSetOfChanges;
+        this.taskFieldChangeRepository = taskFieldChangeRepository;
         this.buildingCommentToBuildingCommentWeb = buildingCommentToBuildingCommentWeb;
         this.buildingRepository = buildingRepository;
         this.buildingCommentRepository = buildingCommentRepository;
@@ -109,7 +112,7 @@ public class BuildingRestController {
     }
 
     @PostMapping("/building/{buildingId}/comment")
-    public Long importBuildings(@PathVariable @NotNull Long buildingId, @RequestBody CreateBuildingCommentWeb createBuildingCommentWeb) throws IOException {
+    public Long createComment(@PathVariable @NotNull Long buildingId, @RequestBody CreateBuildingCommentWeb createBuildingCommentWeb) throws IOException {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Building building = buildingRepository.findById(buildingId).orElseThrow();
         User user = userRepository.findByUsername(username);
@@ -125,10 +128,44 @@ public class BuildingRestController {
     }
 
     @GetMapping("/building/{buildingId}/comments")
-    public List<BuildingCommentWeb> importBuildings(@PathVariable @NotNull Long buildingId) {
+    public List<BuildingCommentWeb> getComments(@PathVariable @NotNull Long buildingId) {
         Building building = buildingRepository.findById(buildingId).orElseThrow();
         return buildingCommentRepository.findAllByBuilding(building).stream()
                 .map(buildingCommentToBuildingCommentWeb)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/building/{buildingId}/task")
+    public Long createTask(@PathVariable @NotNull Long buildingId, @RequestBody CreateTaskWeb createTaskWeb) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User user = userRepository.findByUsername(username);
+
+        Building building = buildingRepository.findById(buildingId).orElseThrow();
+        // create comment
+        BuildingComment buildingComment = new BuildingComment();
+        buildingComment.building = building;
+        if (createTaskWeb.replyTo != null) {
+            buildingComment.parent = buildingCommentRepository.findById(createTaskWeb.replyTo).orElseThrow();
+        }
+        buildingComment.text = "См. задачу " + (createTaskWeb.title != null ? createTaskWeb.title : "");
+        buildingComment.author = user;
+        buildingCommentRepository.save(buildingComment);
+
+        // create task
+        Task task = new Task();
+        task.comment = buildingComment;
+        taskRepository.save(task);
+
+        // create task change history
+        TaskChangeHistory taskChangeHistory = new TaskChangeHistory();
+        taskChangeHistory.task = task;
+        taskChangeHistoryRepository.save(taskChangeHistory);
+
+        // create task change fields
+        List<TaskFieldChange> changes = createTaskWebToSetOfChanges.apply(createTaskWeb).stream()
+                .peek(e -> e.changeHistory = taskChangeHistory)
+                .collect(Collectors.toList());
+        taskFieldChangeRepository.saveAll(changes);
+        return buildingComment.id;
     }
 }

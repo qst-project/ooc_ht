@@ -10,6 +10,7 @@ public class BuildingComment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
+    @Lob
     public String text;
 
     @ManyToOne
@@ -26,4 +27,8 @@ public class BuildingComment {
     @ManyToOne
     @JoinColumn(name = "building_id")
     public Building building;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "task_id", referencedColumnName = "id")
+    public Task task;
+
 }
