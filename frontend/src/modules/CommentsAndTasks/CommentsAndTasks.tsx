@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Spin, Tabs } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import { Comment } from '@ant-design/compatible';
 
 import styles from './CommentsAndTasks.module.scss';
@@ -12,6 +13,7 @@ import CommentInput from '@/components/CommentInput';
 import ReplyInput from '@/components/ReplyInput';
 import { ICommentsData } from '@/consts';
 import TaskList from '@/modules/TaskList';
+
 
 interface CommentsAndTasksProps {
     buildingId: number;
@@ -32,6 +34,7 @@ function CommentItem({
     buildingId,
     comment,
 }: any) {
+    const navigate = useNavigate();
     const [openReply, setOpenReply] = useState(false);
     const [openCreateTask, setCreateTask] = useState(false);
     const [modeCreateTask, setModeCreateTask] = useState(false);
@@ -55,9 +58,13 @@ function CommentItem({
                         : null,
                 ]}
                 content={
-                    <p>
-                        {comment?.text}
-                    </p>
+                    comment.taskId ?
+                        <p onClick={() => navigate(`/task/${comment.id}/buildings/${buildingId}`)}>
+                            {comment?.text}
+                        </p> :
+                        <p>
+                            {comment?.text}
+                        </p>
                 }
             >
                 {RepliesComments(comment.replies, buildingId)}

@@ -11,12 +11,14 @@ import {
   NEW_BUILDING_PAGE_ROUTE,
   TASKS_PAGE_ROUTE,
   PARLEY_PAGE_ROUTE,
+  MY_TASKS_PAGE_ROUTE,
 } from '@/consts';
 import PageLayout from '@/modules/PageLayout';
 import BuildingPage from '@/pages/BuildingPage';
 import NewBuildingPage from '@/pages/NewBuildingPage/NewBuildingPage';
 import TaskPage from '@/pages/TaskPage';
 import ParleyPage from '@/pages/ParleyPage';
+import TasksPage from '@/pages/TasksPage/TasksPage';
 
 function App() {
   return (
@@ -71,6 +73,12 @@ function App() {
                 path={NEW_BUILDING_PAGE_ROUTE}
                 element={
                   <NewBuildingPage />
+                }
+              />
+              <Route
+                path={MY_TASKS_PAGE_ROUTE}
+                element={
+                  <TasksPage />
                 }
               />
             </Routes>

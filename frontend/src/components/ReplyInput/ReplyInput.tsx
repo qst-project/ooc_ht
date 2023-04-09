@@ -110,7 +110,9 @@ function ReplyInput({
                 name={'assignee'}
                 style={{ width: '50%' }}
             >
-                <Upload>
+                <Upload
+                    
+                >
                     <Button icon={<UploadOutlined />}>Загрузить файл</Button>
                 </Upload>
             </Form.Item>

@@ -256,13 +256,20 @@ function NewRegistryListModule() {
                 loading={loading}
                 pagination={tableParams.pagination}
                 dataSource={buildings}
+                onRow={(record) => {
+                    return {
+                        onClick: event => {
+                            navigate(`buildings/${record.id}`);
+                         }, // click row
+                    };
+                }}
                 onChange={handleTableChange}
             />
             <Row justify={'start'}>
                 <Button
                     type='primary'
                     style={{ marginRight: '10px' }}
-                    onClick={() => navigate('/new_building')}
+                    onClick={() => navigate('/new-building')}
                 >
                     Добавить новый объект
                 </Button>
