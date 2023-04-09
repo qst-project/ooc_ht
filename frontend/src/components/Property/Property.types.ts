@@ -7,4 +7,5 @@ export interface PropertyProps {
     type: PropertyType,
     options?: string[],
     group?: string,
+    onRemove?: (name: string) => void,
 }

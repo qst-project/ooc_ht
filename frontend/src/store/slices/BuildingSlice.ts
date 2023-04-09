@@ -43,6 +43,11 @@ export const buildingSlice = createSlice({
         addProperty(state, action: PayloadAction<ICustomPropertySchema>) {
             if (state.buildingData) state.buildingData.customProperties.push(action.payload);
         },
+        removeProperty(state, action: PayloadAction<string>) {
+            if (state.buildingData) {
+                state.buildingData.customProperties = state.buildingData.customProperties.filter(property => property.name !== action.payload);
+            }
+        },
     },
 });
 

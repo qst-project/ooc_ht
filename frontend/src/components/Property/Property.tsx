@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Input, Select } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
 import styles from './Property.module.scss';
 import { PropertyProps } from './Property.types';
@@ -7,7 +8,7 @@ import { PropertyProps } from './Property.types';
 import { PropertyType } from '@/consts';
 import { useAppSelector } from '@/store';
 
-function Property({ name, label, type, options, value }: PropertyProps) {
+function Property({ name, label, type, options, value, onRemove }: PropertyProps) {
     const isEdit = useAppSelector(state => state.buildingReducer.isEdit);
 
     const getPropertyElement = () => {
@@ -32,15 +33,24 @@ function Property({ name, label, type, options, value }: PropertyProps) {
     };
 
     return (
-        <Form.Item
-            label={label}
-            name={name}
-            className={styles.main}
-            initialValue={value}
-            rules={isEdit ? [{ required: true, message: 'Обязательное поле!' }] : []}
-        >
-            {getPropertyElement()}
-        </Form.Item>
+        <div className={styles.main}>
+            <Form.Item
+                label={label}
+                name={name}
+                initialValue={value}
+                rules={isEdit ? [{ required: true, message: 'Обязательное поле!' }] : []}
+            >
+                {getPropertyElement()}
+            </Form.Item>
+            {onRemove && isEdit && (
+                <Button
+                    type='dashed'
+                    shape='circle'
+                    icon={<CloseOutlined />}
+                    onClick={() => onRemove(name)}
+                />
+            )}
+        </div>
     );
 }
 
