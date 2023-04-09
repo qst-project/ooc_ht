@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Form } from 'antd';
 
+import { useNavigate } from 'react-router-dom';
+
 import styles from './BuildingInfo.module.scss';
 
 import ImageList from '@/components/ImageList';
@@ -14,17 +16,20 @@ import EditButton from '@/modules/EditButton';
 import BuildingTitle from '@/components/BuildingTitle';
 import BuildingDescription from '@/components/BuildingDescription';
 
+
 function BuildingInfo() {
     const isEdit = useAppSelector(state => state.buildingReducer.isEdit);
     const buildingData = useAppSelector(state => state.buildingReducer.buildingData);
     const isNew = useAppSelector(state => state.buildingReducer.isNew);
     const dispatch = useAppDispatch();
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const handleForm = (values: any) => {
         if (buildingData) {
             if (isNew) {
                 dispatch(postNewBuilding(buildingData, values));
+                navigate('/');
             } else {
                 dispatch(patchBuilding(buildingData, values));
             }
@@ -55,7 +60,7 @@ function BuildingInfo() {
                 ]} />
                 <MainProperties />
                 <CustomProperties />
-                <BuildingDescription text={'aaaaadf asd fasd asdf a'} />
+                <BuildingDescription text={'Здесь мог быть ваш комментарий'} />
                 {isEdit && (
                     <Form.Item className={styles.save}>
                         <Button
