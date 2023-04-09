@@ -21,6 +21,10 @@ public class TaskChangeHistory {
     public Set<TaskFieldChange> changes;
 
     @ManyToOne
-    @JoinColumn(name = "task_change_history_id")
+    @JoinColumn(name = "parley")
+    public Parley parley;
+
+    @ManyToOne
+    @JoinColumn(name = "task")
     public Task task;
 }

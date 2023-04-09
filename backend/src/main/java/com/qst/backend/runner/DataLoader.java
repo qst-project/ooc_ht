@@ -1,9 +1,11 @@
 package com.qst.backend.runner;
 
 import com.qst.backend.model.pg.Building;
+import com.qst.backend.model.pg.Parley;
 import com.qst.backend.model.pg.User;
 import com.qst.backend.model.xml.CustomAttributeXML;
 import com.qst.backend.repository.BuildingSaver;
+import com.qst.backend.repository.ParleyRepository;
 import com.qst.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -17,14 +19,19 @@ public class DataLoader implements ApplicationRunner {
 
     private final UserRepository userRepository;
     private final BuildingSaver buildingSaver;
+    private final ParleyRepository parleyRepository;
 
     @Autowired
-    public DataLoader(UserRepository userRepository, BuildingSaver buildingSaver) {
+    public DataLoader(UserRepository userRepository, BuildingSaver buildingSaver, ParleyRepository parleyRepository) {
         this.userRepository = userRepository;
         this.buildingSaver = buildingSaver;
+        this.parleyRepository = parleyRepository;
     }
 
     public void loadData() {
+        Parley parley = new Parley();
+        parleyRepository.save(parley);
+
         User admin = new User();
         admin.password = "admin";
         admin.username = "admin";

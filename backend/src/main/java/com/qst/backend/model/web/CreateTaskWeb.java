@@ -18,4 +18,5 @@ public class CreateTaskWeb {
     public Instant deadline;
     public List<Long> mentions;
     public Long replyTo;
+    public Long parley;
 }

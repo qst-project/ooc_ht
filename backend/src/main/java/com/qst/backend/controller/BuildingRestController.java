@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 @RestController
 public class BuildingRestController {
+    final ParleyRepository parleyRepository;
     final TaskToTaskWeb taskToTaskWeb;
     final TaskChangeHistoryRepository taskChangeHistoryRepository;
     final TaskRepository taskRepository;
@@ -40,7 +41,8 @@ public class BuildingRestController {
     final BuildingToFullBuildingWeb buildingToFullBuildingWeb;
     final BuildingsArchiveService buildingsArchiveService;
 
-    public BuildingRestController(TaskToTaskWeb taskToTaskWeb, TaskChangeHistoryRepository taskChangeHistoryRepository, TaskRepository taskRepository, CreateTaskWebToSetOfChanges createTaskWebToSetOfChanges, TaskFieldChangeRepository taskFieldChangeRepository, BuildingCommentToBuildingCommentWeb buildingCommentToBuildingCommentWeb, BuildingRepository buildingRepository, BuildingCommentRepository buildingCommentRepository, UserRepository userRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
+    public BuildingRestController(ParleyRepository parleyRepository, TaskToTaskWeb taskToTaskWeb, TaskChangeHistoryRepository taskChangeHistoryRepository, TaskRepository taskRepository, CreateTaskWebToSetOfChanges createTaskWebToSetOfChanges, TaskFieldChangeRepository taskFieldChangeRepository, BuildingCommentToBuildingCommentWeb buildingCommentToBuildingCommentWeb, BuildingRepository buildingRepository, BuildingCommentRepository buildingCommentRepository, UserRepository userRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
+        this.parleyRepository = parleyRepository;
         this.taskToTaskWeb = taskToTaskWeb;
         this.taskChangeHistoryRepository = taskChangeHistoryRepository;
         this.taskRepository = taskRepository;
@@ -192,6 +194,9 @@ public class BuildingRestController {
 
         TaskChangeHistory taskChangeHistory = new TaskChangeHistory();
         taskChangeHistory.task = task;
+        if (createTaskWeb.parley != null) {
+            taskChangeHistory.parley = parleyRepository.findById(createTaskWeb.parley).orElseThrow();
+        }
         taskChangeHistoryRepository.save(taskChangeHistory);
 
         List<TaskFieldChange> changes = createTaskWebToSetOfChanges.apply(createTaskWeb).stream()
@@ -208,6 +213,7 @@ public class BuildingRestController {
         Building building = buildingRepository.findById(buildingId).orElseThrow();
         return taskRepository.findAllByCommentBuilding(building).stream().map(taskToTaskWeb).collect(Collectors.toList());
     }
+
     @GetMapping("/myTasks")
     public List<TaskWeb> getMyTasks() {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
