@@ -1,6 +1,5 @@
 package com.qst.backend.model.web;
 
-import com.qst.backend.model.pg.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

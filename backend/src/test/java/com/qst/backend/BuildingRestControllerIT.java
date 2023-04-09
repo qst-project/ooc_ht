@@ -149,7 +149,7 @@ class BuildingRestControllerIT {
                 .contentType("application/json")
                 .content(createTask)
         ).andReturn().getResponse().getContentAsString();
-        mockMvc.perform(get("/building/%s/task/%s".formatted(building.id, id)))
+        mockMvc.perform(get("/building/%s/comment/%s/task".formatted(building.id, id)))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.title").value(("my comment")),
@@ -160,7 +160,9 @@ class BuildingRestControllerIT {
                     "title": "changed comment"
                 }
                 """;
-        mockMvc.perform(patch("/building/%s/task/%s".formatted(building.id, id)).content(patchTask))
+        mockMvc.perform(patch("/building/%s/comment/%s/task".formatted(building.id, id))
+                        .contentType("application/json")
+                        .content(patchTask))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.title").value(("changed comment"))

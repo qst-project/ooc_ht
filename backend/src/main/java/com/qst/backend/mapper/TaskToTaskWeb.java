@@ -34,13 +34,12 @@ public class TaskToTaskWeb implements Function<Task, TaskWeb> {
     @Override
     public TaskWeb apply(Task task) {
         List<String> types = List.of("POST", "PATCH");
-        TaskFieldChange title = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("title", types);
-        TaskFieldChange about = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("about", types);
-        TaskFieldChange status = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("status", types);
-        TaskFieldChange deadline = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("deadline", types);
-        TaskFieldChange assignee = taskFieldChangeRepository.findFirstByNameEqualsAndTypeInOrderByChangeHistoryIdDesc("assignee", types);
-        Long assigneeId = Long.valueOf(assignee.value);
-        UserPreviewWeb assigneePreview = userRepository.findById(assigneeId).map(userToUserPreviewWeb).orElseThrow();
+        TaskFieldChange title = taskFieldChangeRepository.findFirstByChangeHistory_TaskAndTypeInAndNameEqualsOrderByChangeHistoryIdDesc(task, types, "title");
+        TaskFieldChange about = taskFieldChangeRepository.findFirstByChangeHistory_TaskAndTypeInAndNameEqualsOrderByChangeHistoryIdDesc(task, types, "about");
+        TaskFieldChange status = taskFieldChangeRepository.findFirstByChangeHistory_TaskAndTypeInAndNameEqualsOrderByChangeHistoryIdDesc(task, types, "status");
+        TaskFieldChange deadline = taskFieldChangeRepository.findFirstByChangeHistory_TaskAndTypeInAndNameEqualsOrderByChangeHistoryIdDesc(task, types, "deadline");
+        TaskFieldChange assignee = taskFieldChangeRepository.findFirstByChangeHistory_TaskAndTypeInAndNameEqualsOrderByChangeHistoryIdDesc(task, types, "assignee");
+        UserPreviewWeb assigneePreview = assignee != null ? userRepository.findById(Long.valueOf(assignee.value)).map(userToUserPreviewWeb).orElseThrow() : null;
         return new TaskWeb(
                 task.id,
                 getValueOrNull(title),
