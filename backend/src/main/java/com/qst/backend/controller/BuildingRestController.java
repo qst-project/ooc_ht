@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -199,9 +200,18 @@ public class BuildingRestController {
         return taskRepository.findById(task.id).map(taskToTaskWeb).orElseThrow();
     }
 
-    @PatchMapping("/building/{buildingId}/tasks")
+    @GetMapping("/building/{buildingId}/tasks")
     public List<TaskWeb> buildingTasks(@PathVariable @NotNull Long buildingId) {
         Building building = buildingRepository.findById(buildingId).orElseThrow();
         return taskRepository.findAllByCommentBuilding(building).stream().map(taskToTaskWeb).collect(Collectors.toList());
+    }
+    @GetMapping("/myTasks")
+    public List<TaskWeb> getMyTasks() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User user = userRepository.findByUsername(username);
+        return taskRepository.findAll().map(taskToTaskWeb).stream()
+                .filter(e -> e.assignee != null)
+                .filter(e -> Objects.equals(e.assignee.id, user.id))
+                .collect(Collectors.toList());
     }
 }
