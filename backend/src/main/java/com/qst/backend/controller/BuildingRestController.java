@@ -19,7 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -133,6 +133,7 @@ public class BuildingRestController {
     public List<BuildingCommentWeb> getComments(@PathVariable @NotNull Long buildingId) {
         Building building = buildingRepository.findById(buildingId).orElseThrow();
         return building.comments.stream()
+                .filter(e -> e.parent == null)
                 .map(buildingCommentToBuildingCommentWeb)
                 .collect(Collectors.toList());
     }
@@ -158,6 +159,9 @@ public class BuildingRestController {
         task.comment = buildingComment;
         taskRepository.save(task);
 
+        buildingComment.task = task;
+        taskRepository.save(task);
+
         // create task change history
         TaskChangeHistory taskChangeHistory = new TaskChangeHistory();
         taskChangeHistory.task = task;
@@ -166,19 +170,23 @@ public class BuildingRestController {
         // create task change fields
         List<TaskFieldChange> changes = createTaskWebToSetOfChanges.apply(createTaskWeb).stream()
                 .peek(e -> e.changeHistory = taskChangeHistory)
+                .peek(e -> e.type = "POST")
                 .collect(Collectors.toList());
         taskFieldChangeRepository.saveAll(changes);
         return buildingComment.id;
     }
 
-    @GetMapping("/building/{buildingId}/task/{taskId}")
-    public TaskWeb getTask(@PathVariable @NotNull Long buildingId, @PathVariable @NotNull Long taskId) {
-        return taskRepository.findById(taskId).map(taskToTaskWeb).orElseThrow();
+    @GetMapping("/building/{buildingId}/comment/{commentId}/task")
+    public TaskWeb getTask(@PathVariable @NotNull Long buildingId, @PathVariable @NotNull Long commentId) {
+        BuildingComment buildingComment = buildingCommentRepository.findById(commentId).orElseThrow();
+        return taskToTaskWeb.apply(buildingComment.task);
     }
 
-    @PatchMapping("/building/{buildingId}/task/{taskId}")
-    public TaskWeb patchTask(@PathVariable @NotNull Long buildingId, @PathVariable @NotNull Long taskId, @RequestBody CreateTaskWeb createTaskWeb) {
-        Task task = taskRepository.findById(taskId).orElseThrow();
+    @PatchMapping("/building/{buildingId}/comment/{commentId}/task")
+    public TaskWeb patchTask(@PathVariable @NotNull Long buildingId, @PathVariable @NotNull Long commentId, @RequestBody CreateTaskWeb createTaskWeb) {
+        BuildingComment buildingComment = buildingCommentRepository.findById(commentId).orElseThrow();
+
+        Task task = buildingComment.task;
 
         TaskChangeHistory taskChangeHistory = new TaskChangeHistory();
         taskChangeHistory.task = task;
@@ -186,9 +194,25 @@ public class BuildingRestController {
 
         List<TaskFieldChange> changes = createTaskWebToSetOfChanges.apply(createTaskWeb).stream()
                 .peek(e -> e.changeHistory = taskChangeHistory)
+                .peek(e -> e.type = "PATCH")
                 .collect(Collectors.toList());
         taskFieldChangeRepository.saveAll(changes);
 
-        return taskRepository.findById(taskId).map(taskToTaskWeb).orElseThrow();
+        return taskRepository.findById(task.id).map(taskToTaskWeb).orElseThrow();
+    }
+
+    @GetMapping("/building/{buildingId}/tasks")
+    public List<TaskWeb> buildingTasks(@PathVariable @NotNull Long buildingId) {
+        Building building = buildingRepository.findById(buildingId).orElseThrow();
+        return taskRepository.findAllByCommentBuilding(building).stream().map(taskToTaskWeb).collect(Collectors.toList());
+    }
+    @GetMapping("/myTasks")
+    public List<TaskWeb> getMyTasks() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User user = userRepository.findByUsername(username);
+        return taskRepository.findAll().stream().map(taskToTaskWeb)
+                .filter(e -> e.assignee != null)
+                .filter(e -> Objects.equals(e.assignee.id, user.id))
+                .collect(Collectors.toList());
     }
 }

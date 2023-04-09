@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TaskWeb {
-    Long id;
-    String title;
-    String about;
-    String status;
-    String deadline;
-    UserPreviewWeb assignee;
+    public Long id;
+    public String title;
+    public String about;
+    public String status;
+    public String deadline;
+    public UserPreviewWeb assignee;
 }

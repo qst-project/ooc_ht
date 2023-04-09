@@ -125,6 +125,25 @@ class BuildingRestControllerIT {
                         status().isOk(),
                         jsonPath("$[0].text").value(("my comment"))
                 );
+
+        String createReply = """
+                {
+                    "text": "reply",
+                    "replyTo": %s
+                }
+                """.formatted(commentId);
+        mockMvc.perform(post("/building/%s/comment".formatted(building.id))
+                        .contentType("application/json")
+                        .content(createReply)
+                )
+                .andExpectAll(
+                        status().isOk()
+                );
+        mockMvc.perform(get("/building/%s/comments".formatted(building.id)))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$[0].replies[0].text").value(("reply"))
+                );
     }
 
     @Test
@@ -149,7 +168,7 @@ class BuildingRestControllerIT {
                 .contentType("application/json")
                 .content(createTask)
         ).andReturn().getResponse().getContentAsString();
-        mockMvc.perform(get("/building/%s/task/%s".formatted(building.id, id)))
+        mockMvc.perform(get("/building/%s/comment/%s/task".formatted(building.id, id)))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.title").value(("my comment")),
@@ -160,7 +179,9 @@ class BuildingRestControllerIT {
                     "title": "changed comment"
                 }
                 """;
-        mockMvc.perform(patch("/building/%s/task/%s".formatted(building.id, id)).content(patchTask))
+        mockMvc.perform(patch("/building/%s/comment/%s/task".formatted(building.id, id))
+                        .contentType("application/json")
+                        .content(patchTask))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.title").value(("changed comment"))

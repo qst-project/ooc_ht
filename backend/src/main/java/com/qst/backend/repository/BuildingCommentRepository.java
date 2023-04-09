@@ -11,4 +11,5 @@ import java.util.List;
 @Transactional
 public interface BuildingCommentRepository extends CrudRepository<BuildingComment, Long> {
     List<BuildingComment> findAllByBuilding(Building building);
+    List<BuildingComment> findAllByParent(BuildingComment parent);
 }
