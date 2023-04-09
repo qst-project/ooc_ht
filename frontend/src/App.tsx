@@ -9,11 +9,13 @@ import {
   MAIN_PAGE_ROUTE,
   SECOND_PAGE_ROUTE,
   NEW_BUILDING_PAGE_ROUTE,
+  TASKS_PAGE_ROUTE,
   PARLEY_PAGE_ROUTE,
 } from '@/consts';
 import PageLayout from '@/modules/PageLayout';
 import BuildingPage from '@/pages/BuildingPage';
 import NewBuildingPage from '@/pages/NewBuildingPage/NewBuildingPage';
+import TaskPage from '@/pages/TaskPage';
 import ParleyPage from '@/pages/ParleyPage';
 
 function App() {
@@ -48,22 +50,34 @@ function App() {
                 }
               />
               <Route
+                path={TASKS_PAGE_ROUTE}
+                element={
+                  <TaskPage />
+                }
+              />
+              <Route
+                path={NEW_BUILDING_PAGE_ROUTE}
+                element={
+                  <NewBuildingPage />
+                }
+              />
+              <Route
                 path={`${PARLEY_PAGE_ROUTE}/:id`}
                 element={
                   <ParleyPage />
                 }
               />
-                <Route
-                  path={NEW_BUILDING_PAGE_ROUTE}
-                  element={
-                    <NewBuildingPage />
-                  }
-                />
+              <Route
+                path={NEW_BUILDING_PAGE_ROUTE}
+                element={
+                  <NewBuildingPage />
+                }
+              />
             </Routes>
           </PageLayout>
         </BrowserRouter>
       </ConfigProvider>
-     </div>
+    </div>
   );
 }
 

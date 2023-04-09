@@ -23,6 +23,10 @@ const typeOptions = [
         label: 'Селектор',
         value: PropertyType.SELECT,
     },
+    {
+        label: 'Число',
+        value: PropertyType.NUMBER,
+    },
 ];
 
 function CreatePropertyModal({ isOpen, onOk, onCancel }: CreatePropertyModalProps) {

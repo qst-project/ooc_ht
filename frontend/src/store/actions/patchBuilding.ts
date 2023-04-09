@@ -4,7 +4,7 @@ import { axiosInstance } from '@/api';
 import { API_URL, IBuildingData, IBuildingDataBack } from '@/consts';
 import { parseBuildingDataFromBack, parseBuildingDataToBack } from '@/utils/parsers';
 
-export const postBuilding = (properties: Record<string, string>, buildingData: IBuildingData) => async (dispatch: AppDispatch) => {
+export const patchBuilding = (buildingData: IBuildingData, properties: Record<string, string>) => async (dispatch: AppDispatch) => {
     dispatch(buildingSlice.actions.setIsLoading(true));
     const buildingDataBack = parseBuildingDataToBack(buildingData, properties);
     await axiosInstance.patch(`${API_URL}/building/${buildingDataBack.id}`, buildingDataBack);

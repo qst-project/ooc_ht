@@ -1,16 +1,23 @@
 import React from 'react';
-import styles from './EditButton.module.scss';
+
 import { Button } from 'antd';
+
+import styles from './EditButton.module.scss';
+
+
 import { useAppDispatch, useAppSelector } from '@/store';
 import { buildingSlice } from '@/store/slices/BuildingSlice';
 
 function EditButton() {
     const isEdit = useAppSelector(state => state.buildingReducer.isEdit);
+    const isNew = useAppSelector(state => state.buildingReducer.isNew);
     const dispatch = useAppDispatch();
 
     const toggleIsEdit = () => {
         dispatch(buildingSlice.actions.setIsEdit(!isEdit));
     };
+
+    if (isNew) return null;
 
     return (
         <div className={styles.main}>

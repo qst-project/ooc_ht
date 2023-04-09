@@ -2,12 +2,12 @@ import { Button, DatePicker, Form, Input, Select, Upload } from 'antd';
 import { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 
-import { createComment } from '@/store/actions';
+import { createComment, createTask } from '@/store/actions';
 import { useAppDispatch } from '@/store';
 
 interface ReplyInputProps {
     buildingId: number;
-    commentId: number;
+    commentId?: number;
     openCreateTask: boolean;
     modeCreateTask: boolean;
     setCreateTask: Function;
@@ -70,8 +70,16 @@ function ReplyInput({
             initialValues={{
                 title: answer,
             }}
-            onFinish={({ answer }) => {
-                console.log(answer);
+            onFinish={({ title, about, date, assignee }) => {
+                dispatch(
+                    createTask(buildingId,
+                        {
+                            title,
+                            about,
+                            deadline: date,
+                            assignee,
+                        }),
+                );
             }}
         >
             <Form.Item
@@ -122,7 +130,7 @@ function ReplyInput({
                     )
                 }
             </Form.Item>
-        </Form>;
+        </Form >;
 
     return modeCreateTask ? (
         <TaskForm />

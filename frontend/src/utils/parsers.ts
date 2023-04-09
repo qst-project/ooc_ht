@@ -18,12 +18,16 @@ export function parseBuildingDataFromBack(data: IBuildingDataBack) {
 
     Object.entries(data.customAttributes).forEach(([group, value]) => {
         Object.entries(value).forEach(([name, property]) => {
+            const meta = property.meta ? JSON.parse(property.meta) : {
+                type: PropertyType.TEXT,
+            };
             buildingData.customProperties.push({
                 name,
                 group,
-                type: PropertyType.TEXT,
+                type: meta.type,
                 label: name,
                 value: property.value,
+                options: meta.options,
             });
         });
     });
@@ -43,24 +47,27 @@ export function parseBuildingDataToBack(data: IBuildingData, values: Record<stri
         fact_owner: values.fact_owner,
         owner: values.owner,
         district: values.district,
+        name: values.name,
     };
-    console.log(buildingData);
 
     data.customProperties.forEach(property => {
         const value = values[property.label];
         if (property.group && property.label) {
-            console.log(property.group, property.label);
+            const metaObject = {
+                type: property.type,
+                options: property.options || null,
+            };
             if (buildingData.customAttributes[property.group]) {
                 buildingData.customAttributes[property.group][property.label] = {
                     value,
-                    meta: '',
+                    meta: JSON.stringify(metaObject),
                 };
             }
             else {
                 buildingData.customAttributes[property.group] = {
                     [property.label]: {
                         value,
-                        meta: '',
+                        meta: JSON.stringify(metaObject),
                     },
                 };
             }

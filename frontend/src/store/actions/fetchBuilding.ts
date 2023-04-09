@@ -6,6 +6,7 @@ import { parseBuildingDataFromBack } from '@/utils/parsers';
 
 export const fetchBuilding = (buildingId: number) => async (dispatch: AppDispatch) => {
     dispatch(buildingSlice.actions.setIsLoading(true));
+    dispatch(buildingSlice.actions.setIsNew(false));
     const res = await axiosInstance.get<IBuildingDataBack>(`${API_URL}/building/${buildingId}`);
     const buildingData = parseBuildingDataFromBack(res.data);
     dispatch(buildingSlice.actions.setBuildingData(buildingData));
@@ -14,11 +15,8 @@ export const fetchBuilding = (buildingId: number) => async (dispatch: AppDispatc
 
 export const fetchBuildings = (params: string) => async (dispatch: AppDispatch) => {
     dispatch(buildingSlice.actions.setIsLoading(true));
-    const res = await axiosInstance.get<IBuildingDataBack>(`${API_URL}/buildings`);
-    console.log('ответ');
-    console.log(res);
-    // const buildingData = parseBuildingData(res.data);
-    // dispatch(buildingSlice.actions.setBuildingData(buildingData));
-    // dispatch(buildingSlice.actions.setIsLoading(false));
+    const res = await axiosInstance.get(`${API_URL}/buildings`);
+    dispatch(buildingSlice.actions.setBuildings(res.data.content));
+    dispatch(buildingSlice.actions.setIsLoading(false));
 };
 

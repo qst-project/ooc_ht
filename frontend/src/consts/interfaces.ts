@@ -13,6 +13,7 @@ export interface IBuildingData {
     name?: string,
     owner?: string,
     type?: string,
+    status?: string,
 }
 
 export interface IBuildingDataBack {
@@ -31,6 +32,7 @@ export interface IBuildingDataBack {
     name?: string,
     owner?: string,
     type?: string,
+    status?: string,
 }
 
 export interface ICommentsData {
@@ -38,4 +40,13 @@ export interface ICommentsData {
     text: string,
     id: number,
     replies: ICommentsData[],
+}
+
+
+export interface ITaskItemData {
+    id: number;
+    about?: string;
+    title: string;
+    deadline?: string;
+    assignee?: string;
 }

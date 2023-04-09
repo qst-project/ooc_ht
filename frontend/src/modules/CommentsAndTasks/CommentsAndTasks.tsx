@@ -11,41 +11,7 @@ import { fetchComments } from '@/store/actions';
 import CommentInput from '@/components/CommentInput';
 import ReplyInput from '@/components/ReplyInput';
 import { ICommentsData } from '@/consts';
-
-// const mockCommentsData: ICommentsData[] = [
-//     {
-//         author: 'Иванов И И',
-//         text: 'Снести здание',
-//         id: 1,
-//         replies: [
-//             {
-//                 author: 'Иванов И И',
-//                 text: 'Снести здание',
-//                 id: 2,
-//                 replies: [],
-//             },
-//             {
-//                 author: 'Иванов И И',
-//                 text: 'Снести здание',
-//                 id: 3,
-//                 replies: [
-//                     {
-//                         author: 'Иванов И И',
-//                         text: 'Снести здание нахуй',
-//                         id: 5,
-//                         replies: [],
-//                     },
-//                 ],
-//             },
-//         ],
-//     },
-//     {
-//         author: 'Иванов И И',
-//         text: 'Снести здание',
-//         id: 4,
-//         replies: [],
-//     },
-// ];
+import TaskList from '@/modules/TaskList';
 
 interface CommentsAndTasksProps {
     buildingId: number;
@@ -127,59 +93,9 @@ function CommentsAndTasks({ buildingId }: CommentsAndTasksProps) {
     const dispatch = useAppDispatch();
     const commentsData = useAppSelector(state => state.commentsReducer.commentsData);
     const loading = useAppSelector(state => state.commentsReducer.isLoading);
-    console.log(commentsData);
     useEffect(() => {
         dispatch(fetchComments(Number(buildingId)));
     }, [buildingId]);
-    // const BuildingComment = (data: ICommentsData[]) => {
-    //     return data.map(
-    //         (comment, index) => {
-    //             // const [openReply, setOpenReply] = useState(false);
-    //             // const [openCreateTask, setCreateTask] = useState(false);
-    //             // const [modeCreateTask, setModeCreateTask] = useState(false);
-    //             return (
-    //                 <div key={index}>
-    //                     <Comment
-    //                         actions={[
-    //                             <ReplyComment
-    //                                 modeCreateTask={modeCreateTask}
-    //                                 setModeCreateTask={() => setModeCreateTask}
-    //                                 openReply={openReply}
-    //                                 setOpenReply={() => setOpenReply}
-    //                                 openCreateTask={openCreateTask}
-    //                                 setCreateTask={setCreateTask}
-    //                             />,
-    //                             openCreateTask ? (
-    //                                 <CreateTask
-    //                                     modeCreateTask={modeCreateTask}
-    //                                     setModeCreateTask={setModeCreateTask}
-    //                                 />)
-    //                                 : null,
-    //                         ]}
-    //                         author={comment.author}
-    //                         content={
-    //                             <p>
-    //                                 {comment.text}
-    //                             </p>
-    //                         }
-    //                     >
-    //                         {BuildingComment(comment.replies)}
-    //                     </Comment>
-    //                     {
-    //                         openReply &&
-    //                         <ReplyInput
-    //                             buildingId={buildingId}
-    //                             modeCreateTask={modeCreateTask}
-    //                             openCreateTask={openCreateTask}
-    //                             setCreateTask={setCreateTask}
-    //                         />
-    //                     }
-    //                 </div>
-    //             );
-    //         },
-    //     );
-    // };
-
     return (
         <Tabs
             defaultActiveKey='1'
@@ -193,7 +109,7 @@ function CommentsAndTasks({ buildingId }: CommentsAndTasksProps) {
                             <>
                                 <div className={styles.comment}>
                                     {
-                                        CommentsList(commentsData,buildingId)
+                                        CommentsList(commentsData, buildingId)
                                     }
                                 </div>
                                 <CommentInput buildingId={buildingId} />
@@ -203,7 +119,7 @@ function CommentsAndTasks({ buildingId }: CommentsAndTasksProps) {
                 {
                     label: 'Задачи',
                     key: '2',
-                    children: 'Задачи',
+                    children: <TaskList buildingId={buildingId} />,
                 },
             ]}
         />
