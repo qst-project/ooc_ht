@@ -19,7 +19,7 @@ export const taskSlice = createSlice({
         setIsLoading(state, action: PayloadAction<boolean>) {
             state.isLoading = action.payload;
         },
-        setCommentsData(state, action: PayloadAction<ITaskItemData>) {
+        setTask(state, action: PayloadAction<ITaskItemData>) {
             state.task = action.payload;
         },
     },

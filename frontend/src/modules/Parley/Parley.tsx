@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Card } from 'antd';
 
@@ -7,17 +7,33 @@ import styles from './Parley.module.scss';
 
 import ParleyProperties from '@/components/ParleyProperties';
 import CommentsAndTasks from '@/modules/CommentsAndTasks';
+import { ParleyProps } from '@/modules/Parley/Parley.types';
+import { API_URL, IBuildingData, IBuildingDataBack } from '@/consts';
+import { axiosInstance } from '@/api';
+import { parseBuildingDataFromBack } from '@/utils/parsers';
 
-function Parley() {
+function Parley({ tasks, buildingId }: ParleyProps) {
+    const [buildingData, setBuildingData] = useState<IBuildingData>();
+    console.log(buildingData);
+
+    useEffect(() => {
+        axiosInstance.get<IBuildingDataBack>(`${API_URL}/building/${buildingId}`).then(res => {
+            const _buildingData = parseBuildingDataFromBack(res.data);
+            setBuildingData(_buildingData);
+        });
+    }, []);
+
+    if (!buildingData) return null;
+
     return (
         <Card
-            title='Заброшенное здание №10'
+            title={buildingData.name}
             className={styles.main}
             headStyle={{ fontSize: '32px', padding: '32px 48px' }}
             bodyStyle={{ padding: '48px' }}
         >
             <div className={styles.top}>
-                <ParleyProperties />
+                <ParleyProperties buildingData={buildingData} />
                 <img
                     className={styles.cover}
                     src='https://www.tiafotc.org/wp-content/uploads/2020/07/CLTHQ_ArticleImage_1200x630.jpg'
@@ -25,11 +41,11 @@ function Parley() {
                 />
             </div>
             <div className={styles.descr}>
-                <h3 className={styles['descr-title']}>Необходимо вынести мусор на объектах 1234</h3>
-                <p>Описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание описание </p>
+                <h3 className={styles['descr-title']}>{buildingData.name}</h3>
+                <p>{buildingData.description}</p>
             </div>
 
-            <CommentsAndTasks buildingId={1} />
+            <CommentsAndTasks buildingId={buildingId} />
         </Card>
     );
 }

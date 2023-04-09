@@ -14,6 +14,7 @@ export interface IBuildingData {
     owner?: string,
     type?: string,
     status?: string,
+    description?: string,
 }
 
 export interface IBuildingDataBack {
@@ -42,11 +43,13 @@ export interface ICommentsData {
     replies: ICommentsData[],
 }
 
-
 export interface ITaskItemData {
     id: number;
     about?: string;
     title: string;
     deadline?: string;
     assignee?: string;
+    buildingId: number;
 }
+
+export type IParleyTasks = Record<string, ITaskItemData[]>;

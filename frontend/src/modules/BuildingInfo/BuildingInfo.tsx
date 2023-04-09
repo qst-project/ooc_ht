@@ -24,7 +24,6 @@ function BuildingInfo() {
     const dispatch = useAppDispatch();
     const [form] = Form.useForm();
     const navigate = useNavigate();
-    console.log(buildingData);
 
     const handleForm = (values: any) => {
         if (buildingData) {

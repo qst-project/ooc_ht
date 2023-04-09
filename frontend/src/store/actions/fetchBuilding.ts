@@ -25,7 +25,7 @@ export const fetchBuildings = (params: string) => async (dispatch: AppDispatch) 
 export const exportXMLs = (ids: number[]) => async (dispatch: AppDispatch) => {
     dispatch(buildingSlice.actions.setIsLoading(true));
     const res = await axiosInstance.get(`${API_URL}/buildings/${ids.join(',')}/export`,  {responseType: 'blob'});
-    saveAs(res.data, 'example.zip');
+    saveAs(res.data, 'document.zip');
     dispatch(buildingSlice.actions.setIsLoading(false));
 };
 
