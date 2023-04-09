@@ -37,6 +37,7 @@ function Property({ name, label, type, options, value }: PropertyProps) {
             name={name}
             className={styles.main}
             initialValue={value}
+            rules={isEdit ? [{ required: true, message: 'Обязательное поле!' }] : []}
         >
             {getPropertyElement()}
         </Form.Item>

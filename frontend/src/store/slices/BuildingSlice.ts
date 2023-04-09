@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IBuildingData } from '@/consts';
+import { ICustomPropertySchema } from '@/modules/CustomProperties/customPropertiesSchema';
 
 interface BuildingState {
     isLoading: boolean,
@@ -38,6 +39,9 @@ export const buildingSlice = createSlice({
                     if (customProperty) customProperty.value = value;
                 }
             });
+        },
+        addProperty(state, action: PayloadAction<ICustomPropertySchema>) {
+            if (state.buildingData) state.buildingData.customProperties.push(action.payload);
         },
     },
 });

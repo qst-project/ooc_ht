@@ -9,6 +9,7 @@ import MainProperties from '@/components/MainProperties';
 import CustomProperties from '@/modules/CustomProperties';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { postBuilding } from '@/store/actions/postBuilding';
+import { fetchBuilding } from '@/store/actions';
 
 function BuildingInfo() {
     const isEdit = useAppSelector(state => state.buildingReducer.isEdit);
@@ -17,7 +18,9 @@ function BuildingInfo() {
     const [form] = Form.useForm();
 
     const handleForm = (values: any) => {
-        if (buildingData) dispatch(postBuilding(values, buildingData));
+        if (buildingData) {
+            dispatch(postBuilding(values, buildingData));
+        }
     };
 
     return (

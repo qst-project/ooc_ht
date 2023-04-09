@@ -37,7 +37,7 @@ function CreatePropertyModal({ isOpen, onOk, onCancel }: CreatePropertyModalProp
     const handleForm = (values: any) => {
         const schema: ICustomPropertySchema = {
             type: values.type,
-            name: Date.now().toString(),
+            name: values.label,
             label: values.label,
             group: values.group,
         };

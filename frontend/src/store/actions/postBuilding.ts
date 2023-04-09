@@ -7,9 +7,10 @@ import { parseBuildingDataFromBack, parseBuildingDataToBack } from '@/utils/pars
 export const postBuilding = (properties: Record<string, string>, buildingData: IBuildingData) => async (dispatch: AppDispatch) => {
     dispatch(buildingSlice.actions.setIsLoading(true));
     const buildingDataBack = parseBuildingDataToBack(buildingData, properties);
-    axiosInstance.patch(`${API_URL}/building/${buildingDataBack.id}`, buildingDataBack).then(res => {
-        console.log(res);
-    });
-    // dispatch(buildingSlice.actions.updateBuildingData(properties));
+    await axiosInstance.patch(`${API_URL}/building/${buildingDataBack.id}`, buildingDataBack);
+    const res = await axiosInstance.get<IBuildingDataBack>(`${API_URL}/building/${buildingData.id}`);
+    const newBuildingData = parseBuildingDataFromBack(res.data);
+    dispatch(buildingSlice.actions.setBuildingData(newBuildingData));
+    dispatch(buildingSlice.actions.setIsEdit(false));
     dispatch(buildingSlice.actions.setIsLoading(false));
 };

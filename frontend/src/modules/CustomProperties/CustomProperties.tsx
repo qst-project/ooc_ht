@@ -21,19 +21,14 @@ function CustomProperties() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [schemas, setSchemas] = useState<ICustomPropertySchema[]>(buildingData?.customProperties || []);
-
-    useEffect(() => {
-        setSchemas(buildingData?.customProperties || []);
-    }, [buildingData]);
-
     useEffect(() => {
         const groupsSet = new Set<string>();
-        schemas.forEach(schema => {
+        if (!buildingData) return;
+        buildingData.customProperties.forEach(schema => {
             if (schema.group) groupsSet.add(schema.group);
         });
         dispatch(setGroups([...groupsSet]));
-    }, [schemas]);
+    }, [buildingData]);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -44,16 +39,18 @@ function CustomProperties() {
     };
 
     const addProperty = (schema: ICustomPropertySchema) => {
-        // setSchemas(prev => [...prev, schema]);
+        dispatch(buildingSlice.actions.addProperty(schema));
         closeModal();
     };
+
+    if (!buildingData) return null;
 
     return (
         <div className={styles.main}>
             <div className={styles.properties}>
                 {groups.map(group => (
                     <Card key={group} title={group} className={styles.group}>
-                        {getSchemasByGroup(schemas, group).map(schema => (
+                        {getSchemasByGroup(buildingData.customProperties, group).map(schema => (
                             <Property
                                 label={schema.label}
                                 name={schema.name}
@@ -73,7 +70,6 @@ function CustomProperties() {
                         onClick={openModal}
                         block icon={<PlusOutlined/>}
                         size='large'
-                        htmlType='submit'
                         style={{ width: 'auto' }}
                     >
                         Добавить поле
