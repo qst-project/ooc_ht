@@ -169,6 +169,9 @@ public class BuildingRestController {
         // create task change history
         TaskChangeHistory taskChangeHistory = new TaskChangeHistory();
         taskChangeHistory.task = task;
+        if (createTaskWeb.parley != null) {
+            taskChangeHistory.parley = parleyRepository.findById(createTaskWeb.parley).orElseThrow();
+        }
         taskChangeHistoryRepository.save(taskChangeHistory);
 
         // create task change fields

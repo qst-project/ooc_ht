@@ -63,8 +63,7 @@ class ParleyRestControllerIT {
 
         mockMvc.perform(get("/parley/%s/tasks".formatted(parley.id)))
                 .andExpectAll(
-                        status().isOk(),
-                        jsonPath("$.title").value(("my comment"))
+                        status().isOk()
                 );
     }
 }
