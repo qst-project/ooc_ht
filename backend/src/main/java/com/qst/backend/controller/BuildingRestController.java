@@ -4,12 +4,13 @@ import com.qst.backend.mapper.BuildingToFullBuildingWeb;
 import com.qst.backend.mapper.BuildingToPreviewBuilding;
 import com.qst.backend.mapper.CreateBuildingWebToBuilding;
 import com.qst.backend.model.pg.Building;
+import com.qst.backend.model.pg.BuildingComment;
+import com.qst.backend.model.pg.User;
 import com.qst.backend.model.web.BuildingPreviewWeb;
+import com.qst.backend.model.web.CreateBuildingCommentWeb;
 import com.qst.backend.model.web.CreateBuildingWeb;
 import com.qst.backend.model.web.FullBuildingWeb;
-import com.qst.backend.repository.BuildingCustomAttributeRepository;
-import com.qst.backend.repository.BuildingRepository;
-import com.qst.backend.repository.BuildingSaver;
+import com.qst.backend.repository.*;
 import com.qst.backend.service.BuildingsArchiveService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -17,11 +18,14 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +33,8 @@ import java.util.stream.Collectors;
 @RestController
 public class BuildingRestController {
     final BuildingRepository buildingRepository;
+    final BuildingCommentRepository buildingCommentRepository;
+    final UserRepository userRepository;
     final BuildingSaver buildingSaver;
     final BuildingToPreviewBuilding buildingToPreviewBuilding;
     final BuildingCustomAttributeRepository buildingCustomAttributeRepository;
@@ -36,8 +42,10 @@ public class BuildingRestController {
     final BuildingToFullBuildingWeb buildingToFullBuildingWeb;
     final BuildingsArchiveService buildingsArchiveService;
 
-    public BuildingRestController(BuildingRepository buildingRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
+    public BuildingRestController(BuildingRepository buildingRepository, BuildingCommentRepository buildingCommentRepository, UserRepository userRepository, BuildingSaver buildingSaver, BuildingToPreviewBuilding buildingToPreviewBuilding, BuildingCustomAttributeRepository buildingCustomAttributeRepository, CreateBuildingWebToBuilding createBuildingWebToBuilding, BuildingToFullBuildingWeb buildingToFullBuildingWeb, BuildingsArchiveService buildingsArchiveService) {
         this.buildingRepository = buildingRepository;
+        this.buildingCommentRepository = buildingCommentRepository;
+        this.userRepository = userRepository;
         this.buildingSaver = buildingSaver;
         this.buildingToPreviewBuilding = buildingToPreviewBuilding;
         this.buildingCustomAttributeRepository = buildingCustomAttributeRepository;
@@ -100,5 +108,21 @@ public class BuildingRestController {
         return buildingsArchiveService.createBuildingsFromArchive(file.getInputStream()).stream()
                 .map(buildingToPreviewBuilding)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/building/{buildingId}/comment")
+    public Long importBuildings(@PathVariable @NotNull Long buildingId, @RequestBody CreateBuildingCommentWeb createBuildingCommentWeb) throws IOException {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Building building = buildingRepository.findById(buildingId).orElseThrow();
+        User user = userRepository.findByUsername(username);
+        BuildingComment buildingComment = new BuildingComment();
+        buildingComment.text = createBuildingCommentWeb.text;
+        buildingComment.author = user;
+        buildingComment.building = building;
+        if (createBuildingCommentWeb.replyTo != null) {
+            buildingComment.reply = buildingCommentRepository.findById(createBuildingCommentWeb.replyTo).orElseThrow();
+        }
+        buildingCommentRepository.save(buildingComment);
+        return buildingComment.id;
     }
 }

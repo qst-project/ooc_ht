@@ -24,4 +24,7 @@ public class Building {
     @OneToMany(mappedBy = "building")
     public Set<BuildingCustomAttribute> attributes;
 
+    @OneToMany(mappedBy="building")
+    private Set<BuildingComment> comments;
+
 }

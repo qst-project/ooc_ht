@@ -10,12 +10,17 @@ public class BuildingComment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
     public String text;
-    public String author;
+
+    @ManyToOne
+    @JoinColumn(name = "building_comment_id")
+    public User author;
+
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     @JsonBackReference
     public BuildingComment reply;
 
-
-//    public String mentions; //todo
+    @ManyToOne
+    @JoinColumn(name = "building_id")
+    public Building building;
 }

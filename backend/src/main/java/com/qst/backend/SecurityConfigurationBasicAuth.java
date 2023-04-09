@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfigurationBasicAuth {
@@ -17,9 +18,9 @@ public class SecurityConfigurationBasicAuth {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().and()
+        http.csrf().disable().cors().disable()
                 .authorizeHttpRequests((authz) -> authz
-//                        .requestMatchers(new AntPathRequestMatcher("**")).permitAll()
+//                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
 //                        .antMatchers("/navigation/**").hasRole("CAPTAIN")
 //                        .antMatchers("/cantina/**").hasRole("CREW")
                                 .anyRequest().authenticated()
