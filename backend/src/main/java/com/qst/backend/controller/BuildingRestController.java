@@ -88,12 +88,10 @@ public class BuildingRestController {
         building.owner = patchRequest.owner != null ? patchRequest.owner : building.owner;
         building.fact_owner = patchRequest.fact_owner != null ? patchRequest.fact_owner : building.fact_owner;
         building.about = patchRequest.about != null ? patchRequest.about : building.about;
+        buildingRepository.save(building);
         if (patchRequest.getCustomAttributes() != null) {
-//            buildingCustomAttributeRepository.deleteAll(building.attributes);
-            building.attributes = Collections.emptySet();
+            buildingCustomAttributeRepository.deleteAll(building.attributes);
             buildingSaver.saveWithProperties(building, patchRequest.getCustomAttributes());
-        } else {
-            buildingRepository.save(building);
         }
         return buildingToFullBuildingWeb.apply(building);
     }
