@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, DatePicker, Form, Input, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 import styles from './Property.module.scss';
@@ -32,6 +32,10 @@ function Property({ name, label, type, options, value, onRemove }: PropertyProps
                             label: option,
                         }))}
                     />
+                );
+            case PropertyType.DATE:
+                return (
+                    <DatePicker />
                 );
         }
     };

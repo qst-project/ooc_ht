@@ -16,16 +16,20 @@ import { buildingSlice } from '@/store/slices/BuildingSlice';
 
 const typeOptions = [
     {
-        label: 'Текстовое поле',
+        label: 'Текст',
         value: PropertyType.TEXT,
+    },
+    {
+        label: 'Число',
+        value: PropertyType.NUMBER,
     },
     {
         label: 'Селектор',
         value: PropertyType.SELECT,
     },
     {
-        label: 'Число',
-        value: PropertyType.NUMBER,
+        label: 'Дата',
+        value: PropertyType.DATE,
     },
 ];
 
