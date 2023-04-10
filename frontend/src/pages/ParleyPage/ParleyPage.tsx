@@ -6,13 +6,14 @@ import Parley from '@/modules/Parley';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchParleyTasks } from '@/store/actions';
 import Loading from '@/components/Loading';
+import { commentsSlice } from '@/store/slices/CommentsSlice';
 
 function ParleyPage() {
     const tasksData = useAppSelector(state => state.parleyReducer.tasks);
     const dispatch = useAppDispatch();
-    console.log(tasksData);
 
     useEffect(() => {
+        dispatch(commentsSlice.actions.setIsParley(true));
         dispatch(fetchParleyTasks());
     }, []);
 

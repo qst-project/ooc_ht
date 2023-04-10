@@ -11,17 +11,19 @@ export const fetchComments = (buildingId: number) => async (dispatch: AppDispatc
     dispatch(commentsSlice.actions.setIsLoading(false));
 };
 
-export const createComment = (buildingId: number, comment: string, commentId: number | undefined) => async (dispatch: AppDispatch) => {
+export const createComment = (buildingId: number, comment: string, commentId: number | undefined, isParley: boolean) => async (dispatch: AppDispatch) => {
     dispatch(commentsSlice.actions.setIsLoading(true));
     const newComment = (comment: string, commentId: number | undefined) => {
         if (commentId) {
             return {
                 text: comment,
                 replyTo: commentId,
+                parley: isParley ? 1 : null,
             };
         }
         return {
             text: comment,
+            parley: isParley ? 1 : null,
         };
     };
 
