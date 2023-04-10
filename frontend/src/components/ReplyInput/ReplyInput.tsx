@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input, Select, Upload } from 'antd';
+import { Button, DatePicker, Form, Input, Select, Upload, message } from 'antd';
 import { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 
@@ -22,6 +22,7 @@ function ReplyInput({
 }: ReplyInputProps) {
     const [form] = Form.useForm();
     const [answer, setAnswer] = useState('');
+    const [filename, setFilename] = useState();
     const dispatch = useAppDispatch();
     const onChangeInput = (changedFields: any) => {
         setAnswer(changedFields.answer);
@@ -78,6 +79,7 @@ function ReplyInput({
                             about,
                             deadline: date,
                             assignee,
+                            files: filename,
                         }),
                 );
             }}
@@ -107,11 +109,24 @@ function ReplyInput({
                 <Select placeholder='Подотчетный' />
             </Form.Item>
             <Form.Item
-                name={'assignee'}
+                name={'file'}
                 style={{ width: '50%' }}
             >
                 <Upload
-                    
+                    name='file'
+                    action='http://localhost:9090/files/upload/file'
+                    headers={{ authorization: 'Basic dXNlcjp1c2Vy' }}
+                    onChange={(info) => {
+                        if (info.file.status !== 'uploading') {
+                            console.log(info.file, info.fileList);
+                        }
+                        if (info.file.status === 'done') {
+                            setFilename(info.file.response);
+                            message.success(`${info.file.name} файл успешно загружен`);
+                        } else if (info.file.status === 'error') {
+                            message.error(`${info.file.name} ошибка загрузки файла.`);
+                        }
+                    }}
                 >
                     <Button icon={<UploadOutlined />}>Загрузить файл</Button>
                 </Upload>

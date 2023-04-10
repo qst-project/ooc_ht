@@ -50,6 +50,7 @@ export interface ITaskItemData {
     deadline?: string;
     assignee?: string;
     buildingId: number;
+    files?: any;
 }
 
 export type IParleyTasks = Record<string, ITaskItemData[]>;

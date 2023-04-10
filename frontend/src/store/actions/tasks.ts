@@ -17,3 +17,11 @@ export const fetchTask = (taskId: number, buildingId: number) => async (dispatch
     dispatch(taskSlice.actions.setTask(res.data));
     dispatch(taskSlice.actions.setIsLoading(false));
 };
+
+export const fetchFile = (filename: string) => async (dispatch: AppDispatch) => {
+    dispatch(taskSlice.actions.setIsLoading(true));
+    const res = await axiosInstance.get(`${API_URL}/files/download/${filename}`);
+    console.log(res);
+    dispatch(taskSlice.actions.setFile(res.data));
+    dispatch(taskSlice.actions.setIsLoading(false));
+};

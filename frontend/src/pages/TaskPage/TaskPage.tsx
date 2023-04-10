@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Spin } from 'antd';
 
 import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchTask } from '@/store/actions/tasks';
 import TaskItem from '@/components/TaskItem';
+
 
 function TaskPage() {
     const { taskId: taskId } = useParams<{ taskId?: string }>();
@@ -13,10 +15,13 @@ function TaskPage() {
         dispatch(fetchTask(Number(taskId), Number(buildingId)));
     }, [taskId, buildingId]);
     const task = useAppSelector(state => state.taskReducer.task);
+    // const loading = useAppSelector(state => state.taskReducer.isLoading);
     return (
-        <div>
-            <TaskItem task={task}/>
-        </div>
+        !task.files
+            ? <Spin /> : (<div>
+                <TaskItem task={task} />
+            </div>)
+
     );
 }
 
