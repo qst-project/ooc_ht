@@ -16,6 +16,7 @@ public class CreateTaskWeb {
     public String about;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "UTC")
     public Instant deadline;
+    public String files;
     public List<Long> mentions;
     public Long replyTo;
     public Long parley;

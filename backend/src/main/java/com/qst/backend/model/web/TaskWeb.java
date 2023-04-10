@@ -13,4 +13,5 @@ public class TaskWeb {
     public String deadline;
     public Long buildingId;
     public UserPreviewWeb assignee;
+    public String files;
 }

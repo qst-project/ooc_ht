@@ -40,7 +40,7 @@ public class FileController {
     }
 
     @PostMapping("/upload/{name}")
-    public String upload(@RequestParam MultipartFile inputFile, @PathVariable String name) {
+    public String upload(@RequestParam(name = "file") MultipartFile inputFile, @PathVariable String name) {
         File file = new File();
         file.hash = UUID.randomUUID().toString();
         file.name = name;
@@ -52,5 +52,10 @@ public class FileController {
             throw new IllegalStateException("The file cannot be read", e);
         }
         return file.hash;
+    }
+    @PostMapping("/resolveName/{hash}")
+    public String meta(@PathVariable String hash) {
+        File file = fileRepository.getFirstByHash(hash);
+        return file.name;
     }
 }

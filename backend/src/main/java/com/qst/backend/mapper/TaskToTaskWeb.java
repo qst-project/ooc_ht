@@ -39,6 +39,7 @@ public class TaskToTaskWeb implements Function<Task, TaskWeb> {
         TaskFieldChange status = taskFieldChangeRepository.findFirstByChangeHistory_TaskAndTypeInAndNameEqualsOrderByChangeHistoryIdDesc(task, types, "status");
         TaskFieldChange deadline = taskFieldChangeRepository.findFirstByChangeHistory_TaskAndTypeInAndNameEqualsOrderByChangeHistoryIdDesc(task, types, "deadline");
         TaskFieldChange assignee = taskFieldChangeRepository.findFirstByChangeHistory_TaskAndTypeInAndNameEqualsOrderByChangeHistoryIdDesc(task, types, "assignee");
+        TaskFieldChange files = taskFieldChangeRepository.findFirstByChangeHistory_TaskAndTypeInAndNameEqualsOrderByChangeHistoryIdDesc(task, types, "files");
         UserPreviewWeb assigneePreview = assignee != null ? userRepository.findById(Long.valueOf(assignee.value)).map(userToUserPreviewWeb).orElseThrow() : null;
         return new TaskWeb(
                 task.id,
@@ -47,7 +48,8 @@ public class TaskToTaskWeb implements Function<Task, TaskWeb> {
                 getValueOrNull(status),
                 getValueOrNull(deadline),
                 task.comment.building.id,
-                assigneePreview
+                assigneePreview,
+                getValueOrNull(files)
         );
     }
 }
