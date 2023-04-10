@@ -53,7 +53,8 @@ public class FileController {
         }
         return file.hash;
     }
-    @PostMapping("/resolveName/{hash}")
+
+    @GetMapping("/resolveName/{hash}")
     public String meta(@PathVariable String hash) {
         File file = fileRepository.getFirstByHash(hash);
         return file.name;
