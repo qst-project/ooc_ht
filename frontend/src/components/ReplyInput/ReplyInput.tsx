@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 
 import { createComment, createTask } from '@/store/actions';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 
 interface ReplyInputProps {
     buildingId: number;
@@ -23,6 +23,8 @@ function ReplyInput({
     const [form] = Form.useForm();
     const [answer, setAnswer] = useState('');
     const dispatch = useAppDispatch();
+    const isParley = useAppSelector(state => state.commentsReducer.isParley);
+
     const onChangeInput = (changedFields: any) => {
         setAnswer(changedFields.answer);
         if (answer.length > 2) {
@@ -38,7 +40,7 @@ function ReplyInput({
             initialValues={{ answer: answer }}
             layout='inline'
             onFinish={({ answer }) => {
-                dispatch(createComment(buildingId, answer, commentId));
+                dispatch(createComment(buildingId, answer, commentId, isParley));
             }}
         >
             <Form.Item
@@ -111,7 +113,7 @@ function ReplyInput({
                 style={{ width: '50%' }}
             >
                 <Upload
-                    
+
                 >
                     <Button icon={<UploadOutlined />}>Загрузить файл</Button>
                 </Upload>

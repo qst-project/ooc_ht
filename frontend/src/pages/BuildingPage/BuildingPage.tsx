@@ -11,11 +11,16 @@ import CommentsAndTasks from '@/modules/CommentsAndTasks';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchBuilding } from '@/store/actions';
 import Loading from '@/components/Loading';
+import { commentsSlice } from '@/store/slices/CommentsSlice';
 
 function BuildingPage() {
     const isLoading = useAppSelector(state => state.buildingReducer.isLoading);
     const dispatch = useAppDispatch();
     const { id: buildingId } = useParams<{ id?: string }>();
+
+    useEffect(() => {
+        dispatch(commentsSlice.actions.setIsParley(false));
+    }, []);
 
     useEffect(() => {
         dispatch(fetchBuilding(Number(buildingId)));

@@ -17,6 +17,7 @@ import TaskList from '@/modules/TaskList';
 
 interface CommentsAndTasksProps {
     buildingId: number;
+    isParley?: boolean,
 }
 
 function CommentsList(comments: ICommentsData[], buildingId: number) {
@@ -96,7 +97,7 @@ const RepliesComments = (data: ICommentsData[], buildingId: number) => {
     );
 };
 
-function CommentsAndTasks({ buildingId }: CommentsAndTasksProps) {
+function CommentsAndTasks({ buildingId, isParley = false }: CommentsAndTasksProps) {
     const dispatch = useAppDispatch();
     const commentsData = useAppSelector(state => state.commentsReducer.commentsData);
     const loading = useAppSelector(state => state.commentsReducer.isLoading);

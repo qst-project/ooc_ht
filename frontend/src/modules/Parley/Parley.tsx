@@ -45,7 +45,7 @@ function Parley({ tasks, buildingId }: ParleyProps) {
                 <p>{buildingData.description}</p>
             </div>
 
-            <CommentsAndTasks buildingId={buildingId} />
+            <CommentsAndTasks buildingId={buildingId} isParley={true} />
         </Card>
     );
 }
