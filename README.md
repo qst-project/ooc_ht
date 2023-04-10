@@ -1,13 +1,13 @@
-# made with love by QST
+# Made with love by core QST team
 
-### Запуск:
+### запуск
 
 > docker compose up
 
 ### порты
 
-> front localhost:8080
+> front http://localhost:8080
 > 
-> minio дэшборд localhost:9001
+> minio дэшборд http://localhost:9001
 > 
-> backend localhost:9090
+> backend http://localhost:9090
